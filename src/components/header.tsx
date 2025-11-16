@@ -1,26 +1,6 @@
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { BookmarkPlus, Bookmark, Trash2, RefreshCw } from "lucide-react";
-import type { Player, Preset } from "@/types/types";
+import { RefreshCw } from "lucide-react";
+import type { Player } from "@/types/types";
 import { PresetsDialog } from "./presetChooser";
 
 interface PresetsHeaderProps {
@@ -31,23 +11,6 @@ interface PresetsHeaderProps {
   isRefreshing: boolean;
 }
 
-const TEST_PRESETS: Preset[] = [
-  {
-    name: "Top Players",
-    players: [
-      { id: "52" },
-      { id: "1234" },
-      { id: "5678" },
-      { id: "9012" },
-      { id: "11234" },
-      { id: "14567" },
-    ],
-  },
-  {
-    name: "123",
-    players: [{ id: "123" }],
-  },
-];
 
 export function PresetsHeader({
   onRefresh,

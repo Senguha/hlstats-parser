@@ -15,7 +15,7 @@ type PlayerState ={
   setSelectedPlayerId: (playerId: string | null) => void;
   deletePlayer: (playerId: string) => void;
   refreshAllPlayers: (playersToRefresh?: Player[]) => Promise<void>;
-  loadPreset: (newPlayers: Player[]) => Promise<PlayerInfo[]>;
+  loadPreset: (newPlayers: Player[]) => Promise<void>;
 }
 
 export const usePlayerStore = create<PlayerState>()(
@@ -144,7 +144,6 @@ export const usePlayerStore = create<PlayerState>()(
           } else {
             set({ selectedPlayerId: null }); // No players, select null
           }
-          return playersBuf
         } catch (err) {
           set({
             error: err instanceof Error ? err.message : 'Failed to load preset',
