@@ -2,15 +2,21 @@ import type { Preset } from "@/types/types";
 
 export const presetsStatic = [
   {
-    "name": "top goon",
-    "players": [
-      { "id": "1152", "name": "чiсто пiпопенцией" },
-      { "id": "12512", "name": "Fel1x" },
-      { "id": "58", "name": "Not active" },
-      { "id": "52", "name": "Mtseng" }
-    ]
+    name: "top goon",
+    players: [
+      { id: "1152", name: "чiсто пiпопенцией" },
+      { id: "12512", name: "Fel1x" },
+      { id: "58", name: "Not active" },
+      { id: "52", name: "Mtseng" },
+    ],
   },
-  { "name": "1231", "players": [{ "id": "1111", "name": "Private" }] },
-  { "name": "1231 copy", "players": [{ "id": "1111", "name": "Private" }] },
-  { "name": "Jail Admins", "players": [{ "id": "52", "name": "Mtseng" },{"id":"1901", "name":"yfyfyfyfyfy"}] }
-] as Preset[]
+  { name: "1231", players: [{ id: "1111", name: "Private" }] },
+  { name: "1231 copy", players: [{ id: "1111", name: "Private" }] },
+  {
+    name: "Jail Admins",
+    players: [
+      { id: "52", name: "Mtseng" },
+      { id: "1901", name: "yfyfyfyfyfy" },
+    ],
+  },
+] as Preset[];

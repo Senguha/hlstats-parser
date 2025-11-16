@@ -33,13 +33,18 @@ export interface PlaytimeStat {
 }
 
 export function PlaytimeSummary({ sessions }: PlaytimeSummaryProps) {
+  
+  const today = new Date();
+  const twoWeeksAgo = new Date(new Date().getTime() - 14*86400000);
   const [range, setRange] = useState<DateRange | undefined>({
-    from: new Date(new Date().getTime() - 14*86400000),
-    to: new Date(),
+    from: twoWeeksAgo,
+    to: today,
   });
 
+  const {setChartOption, option} = useChartOptions();
+
   useEffect(() => {
-    if (range?.from && range?.to)
+    if (range?.from && range?.to && option.type === "Range")
     setChartOption({type: "Range",
         startRange: range?.from,
         endRange: range?.to
@@ -98,7 +103,7 @@ export function PlaytimeSummary({ sessions }: PlaytimeSummaryProps) {
 
 
 console.log(stats);
-  const {setChartOption, option} = useChartOptions();
+
 
   return (
     <div className="flex gap-8 flex-wrap">
