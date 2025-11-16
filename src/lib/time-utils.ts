@@ -112,7 +112,7 @@ export function fillMissingDates(data: GameSession[], filter?: ChartOption): Gam
   
   // Helper function to format date for display
   const formatDateDisplay = (dateStr: string): string => {
-    const [year, month, day] = dateStr.split('-');
+    const [, month, day] = dateStr.split('-');
     return `${day}/${month}`;
   };
   
