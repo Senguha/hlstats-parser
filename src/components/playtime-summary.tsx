@@ -110,7 +110,7 @@ console.log(stats);
       {stats.map((stat, index) => {
         if (index !== 2)
           return (
-            <Item key={stat.label} variant="muted" className={cn("flex-1 min-w-72 hover:cursor-pointer hover:bg-accent transition-all", option.type === stat.chartOption.type && "bg-accent border-2 border-primary")} onClick={()=>{setChartOption(stat.chartOption)}}>
+            <Item key={stat.label} variant="muted" className={cn("flex-1 min-w-72 hover:cursor-pointer hover:bg-accent transition-all", option.type === stat.chartOption.type && "bg-accent ring-1 ring-muted-foreground/70")} onClick={()=>{setChartOption(stat.chartOption)}}>
               <ItemContent>
                 <ItemTitle className="text-sm font-medium">
                   {stat.label}
@@ -124,7 +124,7 @@ console.log(stats);
           );
         else
           return (
-            <Item key={stat.label} variant="muted" className={cn("flex-1 min-w-72 hover:cursor-pointer hover:bg-accent transition-all", option.type === stat.chartOption.type && "bg-accent border-2 border-primary")} onClick={()=>{setChartOption(stat.chartOption)}}>
+            <Item key={stat.label} variant="muted" className={cn("flex-1 min-w-72 hover:cursor-pointer hover:bg-accent transition-all", option.type === stat.chartOption.type && "bg-accent ring-1 ring-muted-foreground/70")} onClick={()=>{setChartOption(stat.chartOption)}}>
               <ItemContent>
                 <ItemTitle className="text-sm font-medium">
                   {stat.label}

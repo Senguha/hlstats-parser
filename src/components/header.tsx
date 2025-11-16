@@ -19,7 +19,7 @@ export function PresetsHeader({
   isRefreshing,
 }: PresetsHeaderProps) {
   return (
-    <header className="sticky top-0 z-50 md:w-[85vw] w-full mx-auto border-b border-border/40 bg-background shadow-md rounded-xl">
+    <header className="sticky top-2 z-50 md:w-[85vw] w-full mx-auto border border-border bg-background shadow-md rounded-xl dark:border-input">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <h1 className="text-2xl text-muted-foreground font-bold tracking-tight transition-all hover:scale-105 hover:text-primary">HLStats Parser</h1>
         

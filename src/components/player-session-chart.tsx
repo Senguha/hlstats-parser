@@ -18,7 +18,7 @@ export function PlayerSessionChart(sessionsProps: PlayerSessionsProps) {
   const chartConfig = {
     total: {
       label: "Total Playtime",
-      color: "hsl(var(--chart-1))",
+      color: "var(--primary)",
     },
   };
 
@@ -51,8 +51,8 @@ export function PlayerSessionChart(sessionsProps: PlayerSessionsProps) {
         <BarChart data={chartData.reverse()}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
-          <Bar dataKey="timeInSeconds" radius={[4, 4, 0, 0]} />
-          <ChartTooltip content={<CustomTooltip /> } cursor={{ fill: 'hsl(var(--muted))', opacity: 0.4 }}/>
+          <Bar dataKey="timeInSeconds" radius={[4, 4, 0, 0]} fill="var(--primary)" />
+          <ChartTooltip content={<CustomTooltip /> } cursor={{ fill: 'hsl(var(--muted))', opacity: 0.5 }}/>
         </BarChart>
       </ResponsiveContainer>
     </ChartContainer>

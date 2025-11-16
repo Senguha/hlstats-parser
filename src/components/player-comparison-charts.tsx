@@ -67,15 +67,15 @@ export function PlayerComparisonCharts({ players, loading }: PlayerComparisonCha
   const chartConfig = {
     total: {
       label: "Total Playtime",
-      color: "hsl(var(--chart-1))",
+      color: "var(--primary)",
     },
     last7Days: {
       label: "Last 7 Days",
-      color: "hsl(var(--chart-2))",
+      color: "var(--primary)",
     },
     last30Days: {
       label: "Last 30 Days",
-      color: "hsl(var(--chart-3))",
+      color: "var(--primary)",
     },
   }
 
