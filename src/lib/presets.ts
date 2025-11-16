@@ -1,4 +1,6 @@
-[
+import type { Preset } from "@/types/types";
+
+export const presetsStatic = [
   {
     "name": "top goon",
     "players": [
@@ -11,4 +13,4 @@
   { "name": "1231", "players": [{ "id": "1111", "name": "Private" }] },
   { "name": "1231 copy", "players": [{ "id": "1111", "name": "Private" }] },
   { "name": "Jail Admins", "players": [{ "id": "52", "name": "Mtseng" },{"id":"1901", "name":"yfyfyfyfyfy"}] }
-]
+] as Preset[]

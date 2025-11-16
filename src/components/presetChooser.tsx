@@ -38,6 +38,7 @@ import {
 } from "./ui/dropdown-menu";
 import type { Preset } from "@/types/types";
 import { ButtonGroup } from "./ui/button-group";
+import { presetsStatic } from "@/lib/presets";
 
 interface Player {
   id: string;
@@ -105,7 +106,15 @@ export function PresetsDialog() {
       });
     }
   };
-    const handleRestorePreset = (presetData:Preset) => {
+ 
+  const restorePreset = (presetName: string) => {
+    console.log(presetsStatic);
+
+    const restorePreset = presetsStatic.find((p) => p.name === presetName);
+    if (restorePreset !== undefined) handleRestorePreset(restorePreset);
+  };
+
+  const handleRestorePreset = (presetData: Preset) => {
     if (!presetData.name.trim()) {
       toast.error("Invalid name", {
         description: "Restore preset doesn't have a name",
@@ -121,10 +130,10 @@ export function PresetsDialog() {
     }
 
     try {
-        addPreset(presetData);
-        toast.success("Preset restored", {
-          description: `"${presetData.name}" has been restored`,
-        });   
+      addPreset(presetData);
+      toast.success("Preset restored", {
+        description: `"${presetData.name}" has been restored`,
+      });
     } catch (error) {
       toast.error("Error", {
         description:
@@ -243,16 +252,6 @@ export function PresetsDialog() {
     setPlayerNameInput("");
   };
 
-  const restorePreset = async (presetName: string) => {
-    const res = await fetch('static/presets.json');
-    const presetData = await res.json() as Preset[];
-
-    console.log(presetData)
-
-    const restorePreset = presetData.find((p)=> p.name===presetName);
-    if (restorePreset !== undefined)
-      handleRestorePreset(restorePreset);  
-  }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -362,24 +361,30 @@ export function PresetsDialog() {
                   </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
-                    <ArchiveRestore className="mr-2 h-4 w-4" />
-                    Restore Preset
-                  </Button>
+                      <Button variant="outline">
+                        <ArchiveRestore className="mr-2 h-4 w-4" />
+                        Restore Preset
+                      </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuItem onClick={(e)=> {e.stopPropagation(); restorePreset("top goon")}}>
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          restorePreset("top goon");
+                        }}
+                      >
                         Public
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={(e)=> {e.stopPropagation(); restorePreset("Jail Admins")}}>
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          restorePreset("Jail Admins");
+                        }}
+                      >
                         Jail
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        Freak
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        All admins
-                      </DropdownMenuItem>
+                      <DropdownMenuItem>Freak</DropdownMenuItem>
+                      <DropdownMenuItem>All admins</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </ButtonGroup>
