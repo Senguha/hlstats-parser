@@ -1,153 +1,17 @@
 //import { useQuery, useQueries } from '@tanstack/react-query'
-import * as cheerio from 'cheerio'
-import type { GameSession, PlayerInfo } from '../types/types' // Adjust path as needed
-import { parseTimeToSeconds } from './time-utils'
+import type { PlayerInfo } from '../types/types' // Adjust path as needed
 
 
 
 export async function fetchPlayer(playerId: string): Promise<PlayerInfo> {
-  if (!playerId) {
-    throw new Error("Player ID is required")
-  }
-// Fetch the player info page
-  const urlInfo = `https://stats.chillout.pw/hlstats.php?mode=playerinfo&player=${playerId}`
-  const responseInfo = await fetch(urlInfo, {
-    headers: {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-    },
-  })
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/playerInfo/${playerId}`);
 
-  if (!responseInfo.ok) {
-    throw new Error("Failed to fetch player info")
+  const data = await res.json();  
+  if (!res.ok){
+    throw new Error(`Error getting player info. ${data?.error}`)
   }
 
-  const htmlInfo = await responseInfo.text();
-
-  if (htmlInfo.includes("No player ID specified") || htmlInfo.includes("ERROR")) {
-    throw new Error("Invalid player ID or player not found")
-  }
-
-  // Parse HTML with cheerio
-  const $ = cheerio.load(htmlInfo)
-
-  let playerName = ""
-
-  // Find all bold tags on the page
-  const allBoldTags: string[] = []
-  $("b").each((_, elem) => {
-    const text = $(elem).text().trim()
-    if (text) {
-      allBoldTags.push(text)
-    }
-  })
-
-  // Filter to find the player name
-  // Player name characteristics:
-  // - Not empty
-  // - Not a number (like "11,882")
-  // - Not a label (doesn't contain ":")
-  // - Not "Player Profile"
-  // - Typically short (less than 50 characters)
-  // - Usually appears early in the page
-  for (const text of allBoldTags) {
-    // Skip if it's a known label or pattern
-    if (
-      text === "Player Profile" ||
-      text.includes(":") ||
-      text.includes("Total") ||
-      text.includes("Statistics") ||
-      /^\d+$/.test(text) || // Pure number
-      /^[\d,]+$/.test(text) || // Number with commas
-      text.length > 50
-    ) {
-      continue
-    }
-
-    // If it looks like a name (contains letters), use it
-    if (/[a-zA-Z]/.test(text)) {
-      playerName = text
-      break
-    }
-  }
-
-  // Extract total connection time
-  let totalConnectionTime = ""
-  let totalConnectionTimeSeconds = 0
-
-  // Find the row containing "Total Connection Time:"
-  $("table.data-table tr").each((_, row) => {
-    const cells = $(row).find("td")
-    if (cells.length >= 2) {
-      const label = $(cells[0]).text().trim()
-      if (label === "Total Connection Time:") {
-        totalConnectionTime = $(cells[1]).text().trim()
-        // Parse the time format "2d 16:13:09h"
-        totalConnectionTimeSeconds = parseTimeToSeconds(totalConnectionTime.replace(/h$/, ""))
-      }
-    }
-  })
-
-  if (!playerName) {
-    playerName = `Player ${playerId}`
-  }
-
-  // return {
-  //   playerName,
-  //   totalConnectionTime,
-  //   totalConnectionTimeSeconds,
-  // }
-
-  // Fetch the player sessions page
-  const urlSessions = `https://stats.chillout.pw/hlstats.php?mode=playersessions&player=${playerId}`
-  const responseSessions = await fetch(urlSessions, {
-    headers: {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-    },
-  })
-
-  if (!responseSessions.ok) {
-    throw new Error("Failed to fetch player sessions")
-  }
-
-  const htmlSessions = await responseSessions.text()
-
-  // Check for error messages
-  if (htmlSessions.includes("No player ID specified") || htmlSessions.includes("ERROR")) {
-    throw new Error("Invalid player ID or player not found")
-  }
-
-  // Parse HTML with cheerio
-  const $S = cheerio.load(htmlSessions)
-  const sessions: GameSession[] = []
-
-
-  $S("table.data-table tbody tr").each((_, row) => {
-    const cells = $S(row).find("td")
-
-    if (cells.length >= 4) {
-      const sDate = $S(cells[0]).text().trim()
-      const time = $S(cells[3]).text().trim()
-
-      // Only add if we have valid data and skip first row which is a header
-      if (sDate && time && sDate !== "Date") {
-        const date = new Date(sDate);
-        sessions.push({
-          date,
-          time,
-          timeInSeconds: parseTimeToSeconds(time),
-        })
-      }
-    }
-  })
-
-  const Player = {
-    id: playerId,
-    name: playerName,
-    sessions,
-    totalConnectionTimeSeconds: totalConnectionTimeSeconds,
-  } as PlayerInfo;
-
-  return Player;
+  return data;
 }
 
 // Custom hook for fetching a single player's sessions

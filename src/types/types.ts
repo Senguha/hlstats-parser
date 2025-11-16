@@ -4,6 +4,11 @@ export type GameSession = {
   timeInSeconds: number
 }
 
+export type GameSessionShort = {
+  date: string
+  timeInSeconds: number
+}
+
 export type PlayerInfo = {
   id: string
   name: string
@@ -19,5 +24,12 @@ export type Player = {
 export type Preset = {
   name: string
   players: Player[]
-  createdAt: Date
+}
+
+export type ChartOption = {
+  type: "7days" | "30days" | "Full",
+} | {
+  type: "Range",
+  startRange: Date,
+  endRange: Date;
 }

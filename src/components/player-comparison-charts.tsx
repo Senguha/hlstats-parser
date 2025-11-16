@@ -86,7 +86,6 @@ export function PlayerComparisonCharts({ players, loading }: PlayerComparisonCha
           <div className="font-semibold">{payload[0].payload.fullName}</div>
           {payload.map((entry: any) => (
             <div key={entry.dataKey} className="flex items-center gap-2 text-sm">
-              <div className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.color }} />
               <span className="text-muted-foreground">{entry.name}:</span>
               <span className="font-medium">{formatMinutesToTime(entry.value)}</span>
             </div>
@@ -122,10 +121,6 @@ export function PlayerComparisonCharts({ players, loading }: PlayerComparisonCha
 
   return (
     <div className={`space-y-6 transition-opacity ${loading ? "opacity-50 pointer-events-none" : ""}`}>
-      <div className="text-center">
-        <h2 className="text-2xl font-bold">Player Comparison</h2>
-        <p className="text-muted-foreground">Compare playtime across all players</p>
-      </div>
 
       <Card>
         <CardHeader>

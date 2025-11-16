@@ -1,3 +1,5 @@
+import type { ChartOption, GameSession, GameSessionShort } from "@/types/types"
+
 export function parseTimeToMinutes(timeString: string): number {
   // Parse time strings like "0d 02:30:45" (days hours:minutes:seconds)
   const match = timeString.match(/(\d+)d\s+(\d+):(\d+):(\d+)/)
@@ -35,6 +37,12 @@ export function formatMinutesToTime(minutes: number): string {
   return `${hours}h ${mins}m`
 }
 
+export function formatSecondsToTime(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const timeString = formatMinutesToTime(minutes);
+  return timeString;
+}
+
 export function parseDateString(dateString: string): Date | null {
   // Parse dates like "2025-01-15 14:30:00" or "15/01/2025 14:30"
   try {
@@ -64,10 +72,11 @@ export function parseDateString(dateString: string): Date | null {
 
 export function isWithinDays(date: Date, days: number): boolean {
 
+  const compDate = new Date(date);
   const now = new Date()
   const daysAgo = new Date(now.getTime() - days * 24 * 60 * 60 * 1000)
 
-  return date >= daysAgo
+  return compDate >= daysAgo
 }
 
 export function parseTimeToSeconds(timeString: string): number {
@@ -85,4 +94,77 @@ export function parseTimeToSeconds(timeString: string): number {
 
   // Convert everything to seconds
   return days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds
+}
+
+
+export function fillMissingDates(data: GameSession[], filter?: ChartOption): GameSessionShort[] {
+  if (!data || data.length === 0) return [];
+  
+  // Sort the data by date
+  const sorted = [...data].sort((a, b) => 
+    new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+  
+  // Helper function to get date string in YYYY-MM-DD format
+  const getDateKey = (date: Date): string => {
+    return date.toISOString().split('T')[0];
+  };
+  
+  // Helper function to format date for display
+  const formatDateDisplay = (dateStr: string): string => {
+    const [year, month, day] = dateStr.split('-');
+    return `${day}/${month}`;
+  };
+  
+  // Get start and end dates
+  let startDate = new Date(sorted[0].date);
+  let endDate = new Date();
+  
+  if (filter?.type === "30days") {
+    startDate = new Date(endDate.getTime() - 29 * 24 * 60 * 60 * 1000);
+  } else if (filter?.type === "7days") {
+    startDate = new Date(endDate.getTime() - 6 * 24 * 60 * 60 * 1000);
+  } else if (filter?.type === "Range") {
+    startDate = new Date(filter.startRange.getTime()+ 24 * 60 * 60 * 1000);
+    endDate = new Date(filter.endRange.getTime()+ 24 * 60 * 60 * 1000);
+  }
+  
+  // Create a map for quick lookup (using date string as key)
+  const dataMap = new Map<string, GameSession>();
+  sorted.forEach(item => {
+    const dateKey = getDateKey(new Date(item.date));
+    dataMap.set(dateKey, item);
+  });
+  
+  // Get date keys for iteration
+  const startKey = getDateKey(startDate);
+  const endKey = getDateKey(endDate);
+  
+  // Fill in missing dates
+  const result: GameSessionShort[] = [];
+  const currentDate = new Date(startKey + 'T00:00:00.000Z'); // Use UTC to avoid timezone issues
+  const finalDate = new Date(endKey + 'T00:00:00.000Z');
+  
+  while (currentDate <= finalDate) {
+    const dateKey = getDateKey(currentDate);
+    
+    if (dataMap.has(dateKey)) {
+      const session = dataMap.get(dateKey)!;
+      result.push({
+        date: formatDateDisplay(dateKey),
+        timeInSeconds: session.timeInSeconds
+      });
+    } else {
+      // Add missing date with timeInSeconds 0
+      result.push({
+        date: formatDateDisplay(dateKey),
+        timeInSeconds: 0
+      });
+    }
+    
+    // Move to next day
+    currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+  }
+  
+  return result.reverse();
 }
