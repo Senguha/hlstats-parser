@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,6 +18,7 @@ import {
   Loader2,
   EllipsisVertical,
   ArchiveRestore,
+  UploadIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePresetStore } from "@/store/presetStore";
@@ -39,6 +40,7 @@ import {
 import type { Preset } from "@/types/types";
 import { ButtonGroup } from "./ui/button-group";
 import { presetsStatic } from "@/lib/presets";
+import { downloadFile, usePresetImporter } from "@/lib/export-utils";
 
 interface Player {
   id: string;
@@ -57,6 +59,8 @@ export function PresetsDialog() {
 
   const { presets, addPreset, deletePreset, updatePreset } = usePresetStore();
   const { playersInfo, loadPreset, loading, loadingMessage } = usePlayerStore();
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleCreatePreset = () => {
     if (!newPresetName.trim()) {
@@ -106,7 +110,7 @@ export function PresetsDialog() {
       });
     }
   };
- 
+
   const restorePreset = (presetName: string) => {
     console.log(presetsStatic);
 
@@ -138,6 +142,49 @@ export function PresetsDialog() {
       toast.error("Error", {
         description:
           error instanceof Error ? error.message : "Failed to restore preset",
+      });
+    }
+  };
+
+  const handleExportPreset = (preset: Preset) => {
+    const presetData = JSON.stringify(preset);
+    downloadFile(presetData, `${preset.name}-preset.json`, "application/json");
+  };
+
+  const {
+    preset,
+    loading: presetLoading,
+    importPreset,
+  } = usePresetImporter();
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      await importPreset(file).then(()=>{
+        if (preset !== null && preset !== undefined) 
+        handleImportPreset(JSON.stringify(preset));
+      });
+    } catch (err) {
+      // Error is already handled in the hook
+      console.error("Import failed:", err);
+    }
+  };
+
+  const handleImportPreset = async (presetData: string) => {
+    try {
+      const importedPreset = JSON.parse(presetData);
+      addPreset(importedPreset);
+      toast.success("Preset imported", {
+        description: `"${importedPreset.name}" has been imported`,
+      });
+    } catch (error) {
+      toast.error("Error", {
+        description:
+          error instanceof Error ? error.message : "Failed to import preset",
       });
     }
   };
@@ -346,6 +393,14 @@ export function PresetsDialog() {
                                 >
                                   Duplicate
                                 </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleExportPreset(preset);
+                                  }}
+                                >
+                                  Export
+                                </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </ItemActions>
@@ -356,14 +411,14 @@ export function PresetsDialog() {
 
                 <ButtonGroup className="mx-auto">
                   <Button onClick={startCreating} variant="outline">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create New Preset
+                    <Plus className="h-4 w-4" />
+                    Create New
                   </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline">
-                        <ArchiveRestore className="mr-2 h-4 w-4" />
-                        Restore Preset
+                        <ArchiveRestore className="h-4 w-4" />
+                        Restore
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
@@ -387,6 +442,24 @@ export function PresetsDialog() {
                       <DropdownMenuItem>All admins</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
+                  <Button
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (inputRef !== null) inputRef.current?.click();
+                    }}
+                    disabled={presetLoading}
+                  >
+                    <UploadIcon className="h-4 w-4" />
+                    Import
+                    <Input
+                      type="file"
+                      ref={inputRef}
+                      accept=".json"
+                      className="hidden"
+                      onChange={handleFileChange}
+                    />
+                  </Button>
                 </ButtonGroup>
               </>
             )}
