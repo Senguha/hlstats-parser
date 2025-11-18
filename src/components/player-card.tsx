@@ -14,7 +14,7 @@ export function PlayerCard({ player, isSelected, onSelect }: PlayerCardProps) {
 
   return (
     <Item
-      className={`cursor-pointer transition-all hover:shadow-md ${isSelected ? "ring-1 ring-muted-foreground/70" : ""}`}
+      className={`cursor-pointer transition-all hover:bg-accent ${isSelected ? "bg-accent ring-1 ring-muted-foreground/70" : ""}`}
       onClick={onSelect}
       variant="outline"
     >
