@@ -90,7 +90,6 @@ export default function PlayerTable({
   const handleCellMouseEnter = (
     rowIndex: number,
     colKey: keyof PlayerData,
-    value: string
   ) => {
     if (!isSelecting || !selectionStart) return;
 
@@ -180,7 +179,7 @@ export default function PlayerTable({
                       handleCellMouseDown(rowIndex, colKey, row[colKey])
                     }
                     onMouseEnter={() =>
-                      handleCellMouseEnter(rowIndex, colKey, row[colKey])
+                      handleCellMouseEnter(rowIndex, colKey)
                     }
                     className={`cursor-pointer transition-colors relative ${
                       isCellSelected(rowIndex, colKey)
