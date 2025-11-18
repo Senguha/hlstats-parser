@@ -33,6 +33,7 @@ import {
 import type { DateRange } from "react-day-picker";
 import { CalendarButton } from "./custom-calendar-button";
 import { SortButton } from "./sort-button";
+import PlayerTable from "./player-table";
 
 interface PlayerComparisonChartsProps {
   players: PlayerInfo[];
@@ -41,6 +42,14 @@ interface PlayerComparisonChartsProps {
 
 type ChartType = "total" | "last7Days" | "last30Days" | "customRange";
 export type SortType = "asc" | "desc" | "none";
+export type ChartData = {
+  name: string;
+  fullName: string;
+  total: number;
+  last7Days: number;
+  last30Days: number;
+  customRange: number;
+};
 
 export function PlayerComparisonCharts({
   players,
@@ -116,7 +125,7 @@ export function PlayerComparisonCharts({
       last30Days: last30DaysMinutes,
       customRange: rangeMinutes,
     };
-  });
+  }) as ChartData[];
 
   if (sortType !== "none") {
     if (sortType === "asc")
@@ -281,20 +290,23 @@ export function PlayerComparisonCharts({
           </div>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={chartConfig} className="h-80 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar
-                  dataKey={currentChart.dataKey}
-                  fill={currentChart.color}
-                  radius={[4, 4, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+          <PlayerTable rawData={chartData}>
+            <ChartContainer config={chartConfig} className="h-80 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar
+                    dataKey={currentChart.dataKey}
+                    fill={currentChart.color}
+                    radius={[4, 4, 0, 0]}
+                    className="hover:cursor-pointer"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </PlayerTable>
         </CardContent>
       </Card>
     </div>
