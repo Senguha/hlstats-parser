@@ -124,7 +124,7 @@ export function PlaytimeSummary({ sessions }: PlaytimeSummaryProps) {
                   {stat.label}
                 </ItemTitle>
                 <ItemDescription>
-                  <div className="text-2xl font-bold">{stat.value}</div>
+                  <span className="text-2xl font-bold">{stat.value}</span><br/>
                   {stat.sessions} session{stat.sessions !== 1 ? "s" : ""}
                 </ItemDescription>
               </ItemContent>
@@ -149,7 +149,7 @@ export function PlaytimeSummary({ sessions }: PlaytimeSummaryProps) {
                   {stat.label}
                 </ItemTitle>
                 <ItemDescription>
-                  <div className="text-2xl font-bold">{stat.value}</div>
+                  <span className="text-2xl font-bold">{stat.value}</span><br/>
                   {stat.sessions} session{stat.sessions !== 1 ? "s" : ""}
                 </ItemDescription>
               </ItemContent>

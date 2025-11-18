@@ -491,7 +491,7 @@ export function PresetsDialog() {
                         }
                       }}
                     />
-                    <Input
+{/*                     <Input
                       id="player-name"
                       placeholder="Player name (optional)"
                       value={playerNameInput}
@@ -502,7 +502,7 @@ export function PresetsDialog() {
                           handleAddPlayer();
                         }
                       }}
-                    />
+                    /> */}
                     <Button
                       type="button"
                       onClick={handleAddPlayer}
