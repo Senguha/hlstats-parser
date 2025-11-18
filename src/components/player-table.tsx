@@ -1,4 +1,4 @@
-import { useState, useEffect, Children } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -10,22 +10,40 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import type { ChartData } from "./player-comparison-charts";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { formatMinutesToTime} from "@/lib/time-utils";
+import { formatMinutesToTime } from "@/lib/time-utils";
 
 type SelectableDataGridProps = {
   rawData: ChartData[];
   children: React.ReactNode;
 };
 
+type PlayerData = {
+  Name: string;
+  TotalPlaytime: string;
+  Last7Days: string;
+  Last30Days: string;
+  CustomRange: string;
+};
 
-export default function PlayerTable({ rawData, children }: SelectableDataGridProps) {
-  const [selectedCells, setSelectedCells] = useState([]);
-  const [copiedCells, setCopiedCells] = useState([]);
+type SelectedCell = {
+  rowIndex: number;
+  colKey: keyof PlayerData;
+  value: string;
+};
+
+export default function PlayerTable({
+  rawData,
+  children,
+}: SelectableDataGridProps) {
+  const [selectedCells, setSelectedCells] = useState<SelectedCell[]>([]);
+  const [copiedCells, setCopiedCells] = useState<SelectedCell[]>([]);
   const [isSelecting, setIsSelecting] = useState(false);
-  const [selectionStart, setSelectionStart] = useState(null);
+  const [selectionStart, setSelectionStart] = useState<{
+    rowIndex: number;
+    colKey: keyof PlayerData;
+  } | null>(null);
 
-
-  const data = rawData.map((item:ChartData) => {
+  const data: PlayerData[] = rawData.map((item: ChartData) => {
     return {
       Name: item.name,
       TotalPlaytime: formatMinutesToTime(item.total),
@@ -35,12 +53,11 @@ export default function PlayerTable({ rawData, children }: SelectableDataGridPro
     };
   });
 
-
-  const columns = Object.keys(data[0]);
-  const columnHeaders = Object.keys(data[0]);
+  const columns = Object.keys(data[0]) as (keyof PlayerData)[];
+  const columnHeaders = Object.keys(data[0]) as (keyof PlayerData)[];
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       // Ctrl+C or Cmd+C
       if (
         e.ctrlKey &&
@@ -60,13 +77,21 @@ export default function PlayerTable({ rawData, children }: SelectableDataGridPro
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedCells]);
 
-  const handleCellMouseDown = (rowIndex, colKey, value) => {
+  const handleCellMouseDown = (
+    rowIndex: number,
+    colKey: keyof PlayerData,
+    value: string
+  ) => {
     setIsSelecting(true);
     setSelectionStart({ rowIndex, colKey });
     setSelectedCells([{ rowIndex, colKey, value }]);
   };
 
-  const handleCellMouseEnter = (rowIndex, colKey, value) => {
+  const handleCellMouseEnter = (
+    rowIndex: number,
+    colKey: keyof PlayerData,
+    value: string
+  ) => {
     if (!isSelecting || !selectionStart) return;
 
     // Only select cells in the same column
@@ -75,7 +100,7 @@ export default function PlayerTable({ rawData, children }: SelectableDataGridPro
     const startRow = Math.min(selectionStart.rowIndex, rowIndex);
     const endRow = Math.max(selectionStart.rowIndex, rowIndex);
 
-    const newSelection = [];
+    const newSelection: SelectedCell[] = [];
     for (let i = startRow; i <= endRow; i++) {
       newSelection.push({
         rowIndex: i,
@@ -111,13 +136,13 @@ export default function PlayerTable({ rawData, children }: SelectableDataGridPro
     setSelectionStart(null);
   };
 
-  const isCellSelected = (rowIndex, colKey) => {
+  const isCellSelected = (rowIndex: number, colKey: keyof PlayerData) => {
     return selectedCells.some(
       (cell) => cell.rowIndex === rowIndex && cell.colKey === colKey
     );
   };
 
-  const isCellCopied = (rowIndex, colKey) => {
+  const isCellCopied = (rowIndex: number, colKey: keyof PlayerData) => {
     return copiedCells.some(
       (cell) => cell.rowIndex === rowIndex && cell.colKey === colKey
     );
@@ -125,9 +150,7 @@ export default function PlayerTable({ rawData, children }: SelectableDataGridPro
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent onMouseUp={handleMouseUp} className="min-w-3xl">
         <DialogTitle className="hidden">Selectable Data Grid</DialogTitle>
         <div className="text-sm text-muted-foreground">
