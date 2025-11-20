@@ -17,6 +17,14 @@ type SelectableDataGridProps = {
   children: React.ReactNode;
 };
 
+const PlayerDataFields = {
+  Name: "Name",
+  TotalPlaytime: "TotalPlaytime",
+  Last7Days: "Last7Days",
+  Last30Days: "Last30Days",
+  CustomRange: "CustomRange",
+};
+
 type PlayerData = {
   Name: string;
   TotalPlaytime: string;
@@ -43,6 +51,8 @@ export default function PlayerTable({
     colKey: keyof PlayerData;
   } | null>(null);
 
+  const columnHeaders = Object.keys(PlayerDataFields) as (keyof PlayerData)[];
+
   const data: PlayerData[] = rawData.map((item: ChartData) => {
     return {
       Name: item.name,
@@ -52,9 +62,6 @@ export default function PlayerTable({
       CustomRange: formatMinutesToTime(item.customRange),
     };
   });
-
-  const columns = Object.keys(data[0]) as (keyof PlayerData)[];
-  const columnHeaders = Object.keys(data[0]) as (keyof PlayerData)[];
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -87,10 +94,7 @@ export default function PlayerTable({
     setSelectedCells([{ rowIndex, colKey, value }]);
   };
 
-  const handleCellMouseEnter = (
-    rowIndex: number,
-    colKey: keyof PlayerData,
-  ) => {
+  const handleCellMouseEnter = (rowIndex: number, colKey: keyof PlayerData) => {
     if (!isSelecting || !selectionStart) return;
 
     // Only select cells in the same column
@@ -148,56 +152,61 @@ export default function PlayerTable({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent onMouseUp={handleMouseUp} className="min-w-3xl">
-        <DialogTitle className="hidden">Selectable Data Grid</DialogTitle>
-        <div className="text-sm text-muted-foreground">
-          <p>
-            <kbd>Ctrl+C:</kbd> Copy selected cells
-          </p>
-          <p>
-            <kbd>Esc:</kbd> Clear selection
-          </p>
-        </div>
+    <>
+      {data.length === 0 && (children)}
+      {data.length > 0 && (
+        <Dialog>
+          <DialogTrigger asChild>{children}</DialogTrigger>
+          <DialogContent onMouseUp={handleMouseUp} className="min-w-3xl">
+            <DialogTitle className="hidden">Selectable Data Grid</DialogTitle>
+            <div className="text-sm text-muted-foreground">
+              <p>
+                <kbd>Ctrl+C:</kbd> Copy selected cells
+              </p>
+              <p>
+                <kbd>Esc:</kbd> Clear selection
+              </p>
+            </div>
 
-        <Table className="select-none">
-          <TableHeader>
-            <TableRow>
-              {columnHeaders.map((header, idx) => (
-                <TableHead key={idx}>{header}</TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
-                {columns.map((colKey) => (
-                  <TableCell
-                    key={`${rowIndex}-${colKey}`}
-                    onMouseDown={() =>
-                      handleCellMouseDown(rowIndex, colKey, row[colKey])
-                    }
-                    onMouseEnter={() =>
-                      handleCellMouseEnter(rowIndex, colKey)
-                    }
-                    className={`cursor-pointer transition-colors relative ${
-                      isCellSelected(rowIndex, colKey)
-                        ? "bg-accent ring-1 ring-inset rounded"
-                        : "hover:bg-muted"
-                    }`}
-                  >
-                    <span className="relative z-10">{row[colKey]}</span>
-                    {isCellCopied(rowIndex, colKey) && (
-                      <span className="absolute inset-0 bg-primary/50 animate-pulse" />
-                    )}
-                  </TableCell>
+            <Table className="select-none">
+              <TableHeader>
+                <TableRow>
+                  {columnHeaders.map((header, idx) => (
+                    <TableHead key={idx}>{header}</TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data.map((row, rowIndex) => (
+                  <TableRow key={rowIndex}>
+                    {columnHeaders.map((colKey) => (
+                      <TableCell
+                        key={`${rowIndex}-${colKey}`}
+                        onMouseDown={() =>
+                          handleCellMouseDown(rowIndex, colKey, row[colKey])
+                        }
+                        onMouseEnter={() =>
+                          handleCellMouseEnter(rowIndex, colKey)
+                        }
+                        className={`cursor-pointer transition-colors relative ${
+                          isCellSelected(rowIndex, colKey)
+                            ? "bg-accent ring-1 ring-inset rounded"
+                            : "hover:bg-muted"
+                        }`}
+                      >
+                        <span className="relative z-10">{row[colKey]}</span>
+                        {isCellCopied(rowIndex, colKey) && (
+                          <span className="absolute inset-0 bg-primary/50 animate-pulse" />
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </DialogContent>
-    </Dialog>
+              </TableBody>
+            </Table>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 }

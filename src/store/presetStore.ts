@@ -1,15 +1,17 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { Preset } from '@/types/types';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { Preset } from "@/types/types";
 
 type PresetState = {
   // === STATE ===
   presets: Preset[];
+  activePreset: string;
 
   // === ACTIONS ===
-  addPreset: (preset: Omit<Preset, 'createdAt'>) => void;
+  addPreset: (preset: Omit<Preset, "createdAt">) => void;
   deletePreset: (presetName: string) => void;
-  updatePreset: (oldName: string, newPreset: Omit<Preset, 'createdAt'>) => void;
+  updatePreset: (oldName: string, newPreset: Omit<Preset, "createdAt">) => void;
+  setActivePreset: (preset: string) => void;
 };
 
 export const usePresetStore = create<PresetState>()(
@@ -17,6 +19,7 @@ export const usePresetStore = create<PresetState>()(
     (set) => ({
       // --- INITIAL STATE ---
       presets: [],
+      activePreset: "",
 
       // --- ACTIONS ---
 
@@ -56,14 +59,18 @@ export const usePresetStore = create<PresetState>()(
       updatePreset: (oldName, newPreset) => {
         set((state) => ({
           presets: state.presets.map((p) =>
-            p.name === oldName
-              ? { ...newPreset }
-              : p
+            p.name === oldName ? { ...newPreset } : p
           ),
         }));
       },
-    }),{
-      name: "saved-presets"
+      setActivePreset: (preset) => {
+        set(() => ({
+          activePreset: preset,
+        }));
+      },
+    }),
+    {
+      name: "saved-presets",
     }
   )
 );

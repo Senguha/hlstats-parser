@@ -15,6 +15,7 @@ import { usePlayerStore } from "@/store/playerStore";
 import { PlayerSessionChart } from "./components/player-session-chart";
 import { RotateCcwIcon } from "lucide-react";
 import { useChartOptions } from "./store/chartStore";
+import { LoadingSkeleton } from "./components/loading-skeleton";
 
 export default function App() {
   const {
@@ -58,7 +59,6 @@ export default function App() {
       }
 
       <div className="container mx-auto p-4 md:p-8 space-y-6">
-
         {error && (
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>
@@ -79,48 +79,52 @@ export default function App() {
           </Card>
         )}
 
-        {playersInfo.length > 1 && (
-          <PlayerComparisonCharts players={playersInfo} loading={loading} />
-        )}
-
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Players</h2>
-          <PlayerList
-            players={playersInfo}
-            selectedPlayerId={selectedPlayerId}
-            onSelectPlayer={setSelectedPlayerId} // Pass action from store
-            loading={loading}
-          />
-        </div>
-
-        {selectedPlayer && (
+        {loading ? (
+          <LoadingSkeleton/>
+        ) : (
           <>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex justify-between">
-                  <div>
-                    {selectedPlayer.name}'s Game Sessions
-                    <p className="text-sm text-muted-foreground font-normal">
-                      Found {selectedPlayer.sessions.length} session
-                      {selectedPlayer.sessions.length !== 1 ? "s" : ""}
-                    </p>
-                  </div>
-                  <RotateCcwIcon
-                    className="h-8 w-8 shadow rounded-full p-2 transition-all hover:cursor-pointer hover:bg-muted"
-                    onClick={() => {
-                      setChartOption({ type: "Full" });
-                    }}
-                  />
-                </CardTitle>
+            {playersInfo.length > 1 && (
+              <PlayerComparisonCharts players={playersInfo} loading={loading} />
+            )}
 
-                <CardDescription></CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-6">
-                <PlaytimeSummary sessions={selectedPlayer.sessions} />
-                <PlayerSessionChart sessions={selectedPlayer.sessions} />
-                {/* <SessionsTable sessions={selectedPlayer.sessions} /> */}
-              </CardContent>
-            </Card>
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">Players</h2>
+              <PlayerList
+                players={playersInfo}
+                selectedPlayerId={selectedPlayerId}
+                onSelectPlayer={setSelectedPlayerId} // Pass action from store
+                loading={loading}
+              />
+            </div>
+
+            {selectedPlayer && (
+              <>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex justify-between">
+                      <div>
+                        {selectedPlayer.name}'s Game Sessions
+                        <p className="text-sm text-muted-foreground font-normal">
+                          Found {selectedPlayer.sessions.length} session
+                          {selectedPlayer.sessions.length !== 1 ? "s" : ""}
+                        </p>
+                      </div>
+                      <RotateCcwIcon
+                        className="h-8 w-8 shadow rounded-full p-2 transition-all hover:cursor-pointer hover:bg-muted"
+                        onClick={() => {
+                          setChartOption({ type: "Full" });
+                        }}
+                      />
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-6">
+                    <PlaytimeSummary sessions={selectedPlayer.sessions} />
+                    <PlayerSessionChart sessions={selectedPlayer.sessions} />
+                    {/* <SessionsTable sessions={selectedPlayer.sessions} /> */}
+                  </CardContent>
+                </Card>
+              </>
+            )}
           </>
         )}
       </div>

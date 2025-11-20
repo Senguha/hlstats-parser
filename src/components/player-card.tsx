@@ -23,7 +23,7 @@ export function PlayerCard({ player, isSelected, onSelect }: PlayerCardProps) {
 
           <User className="h-4 w-4" />
 
-          {player.name}
+          <span className="">{player.name}</span>
 
  
           <div className="flex items-center gap-2 text-sm text-muted-foreground ml-auto">

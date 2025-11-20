@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Bar,
@@ -61,6 +61,10 @@ export function PlayerComparisonCharts({
     players.map((p) => p.id)
   );
 
+  useEffect(()=>{
+    setSelectedPlayerIds(players.map((p) => p.id))
+  },[players])
+
   const today = new Date();
   const twoWeeksAgo = new Date(new Date().getTime() - 14 * 86400000);
   const [range, setRange] = useState<DateRange | undefined>({
@@ -69,6 +73,7 @@ export function PlayerComparisonCharts({
   });
 
   if (players.length === 0) return null;
+
 
   const filteredPlayers = players.filter((player) =>
     selectedPlayerIds.includes(player.id)

@@ -100,7 +100,6 @@ export function PlaytimeSummary({ sessions }: PlaytimeSummaryProps) {
     },
   ] as PlaytimeStat[];
 
-  console.log(stats);
 
   return (
     <div className="flex gap-8 flex-wrap">

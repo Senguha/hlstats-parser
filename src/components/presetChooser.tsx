@@ -57,7 +57,7 @@ export function PresetsDialog() {
   const [playerIdInput, setPlayerIdInput] = useState("");
   const [playerNameInput, setPlayerNameInput] = useState("");
 
-  const { presets, addPreset, deletePreset, updatePreset } = usePresetStore();
+  const { presets, addPreset, deletePreset, updatePreset, activePreset, setActivePreset } = usePresetStore();
   const { playersInfo, loadPreset, loading, loadingMessage } = usePlayerStore();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -112,7 +112,6 @@ export function PresetsDialog() {
   };
 
   const restorePreset = (presetName: string) => {
-    console.log(presetsStatic);
 
     const restorePreset = presetsStatic.find((p) => p.name === presetName);
     if (restorePreset !== undefined) handleRestorePreset(restorePreset);
@@ -161,12 +160,15 @@ export function PresetsDialog() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
+
+    console.log(file)
     if (!file) return;
 
     try {
-      await importPreset(file).then(()=>{
-        if (preset !== null && preset !== undefined) 
-        handleImportPreset(JSON.stringify(preset));
+      await importPreset(file).then((presetImported)=>{
+        if (presetImported !== null && preset !== presetImported) {
+          handleImportPreset(presetImported);
+        }
       });
     } catch (err) {
       // Error is already handled in the hook
@@ -174,18 +176,24 @@ export function PresetsDialog() {
     }
   };
 
-  const handleImportPreset = async (presetData: string) => {
+  const handleImportPreset = (presetData: Preset) => {
+
+    console.log("preset in handleImportPreset:", presetData)
     try {
-      const importedPreset = JSON.parse(presetData);
-      addPreset(importedPreset);
+      addPreset(presetData);
       toast.success("Preset imported", {
-        description: `"${importedPreset.name}" has been imported`,
+        description: `"${presetData.name}" has been imported`,
       });
     } catch (error) {
       toast.error("Error", {
         description:
           error instanceof Error ? error.message : "Failed to import preset",
       });
+    }
+    finally{
+      if (inputRef.current?.files !== null && inputRef.current !== null){
+        inputRef.current.value = ""
+      }
     }
   };
   const handleDuplicatePreset = (preset: Preset) => {
@@ -247,6 +255,7 @@ export function PresetsDialog() {
           if (newName !== undefined) player.name = newName;
         });
         updatePreset(preset.name, preset);
+        setActivePreset(preset.name)
       });
       setOpen(false);
 
@@ -341,10 +350,9 @@ export function PresetsDialog() {
                       presets.map((preset) => (
                         <Item
                           key={preset.name}
-                          className={cn(
-                            "cursor-pointer transition-all hover:border-primary",
-                            "hover:shadow-md"
-                          )}
+                          className=
+                            {`cursor-pointer transition-all hover:border-primary hover:shadow-md ${activePreset===preset.name ? "border-primary":""}` }
+                          
                           onClick={() => handleSelectPreset(preset.name)}
                           variant="outline"
                         >
