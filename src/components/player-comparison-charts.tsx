@@ -61,9 +61,9 @@ export function PlayerComparisonCharts({
     players.map((p) => p.id)
   );
 
-  useEffect(()=>{
-    setSelectedPlayerIds(players.map((p) => p.id))
-  },[players])
+  useEffect(() => {
+    setSelectedPlayerIds(players.map((p) => p.id));
+  }, [players]);
 
   const today = new Date();
   const twoWeeksAgo = new Date(new Date().getTime() - 14 * 86400000);
@@ -73,7 +73,6 @@ export function PlayerComparisonCharts({
   });
 
   if (players.length === 0) return null;
-
 
   const filteredPlayers = players.filter((player) =>
     selectedPlayerIds.includes(player.id)
@@ -300,7 +299,18 @@ export function PlayerComparisonCharts({
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
+                  <XAxis
+                    dataKey="name"
+                    angle={-45}
+                    textAnchor="end"
+                    height={75}
+                    tickFormatter={(value) => {
+                      const maxLength = 10;
+                      return value.length > maxLength
+                        ? value.substring(0, maxLength) + "..."
+                        : value;
+                    }}
+                  />
                   <Tooltip content={<CustomTooltip />} />
                   <Bar
                     dataKey={currentChart.dataKey}

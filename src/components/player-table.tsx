@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import type { ChartData } from "./player-comparison-charts";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { formatMinutesToTime } from "@/lib/time-utils";
+import { ScrollArea } from "./ui/scroll-area";
 
 type SelectableDataGridProps = {
   rawData: ChartData[];
@@ -153,57 +154,62 @@ export default function PlayerTable({
 
   return (
     <>
-      {data.length === 0 && (children)}
+      {data.length === 0 && children}
       {data.length > 0 && (
         <Dialog>
           <DialogTrigger asChild>{children}</DialogTrigger>
-          <DialogContent onMouseUp={handleMouseUp} className="min-w-3xl">
-            <DialogTitle className="hidden">Selectable Data Grid</DialogTitle>
-            <div className="text-sm text-muted-foreground">
-              <p>
-                <kbd>Ctrl+C:</kbd> Copy selected cells
-              </p>
-              <p>
-                <kbd>Esc:</kbd> Clear selection
-              </p>
-            </div>
+          <DialogContent
+            onMouseUp={handleMouseUp}
+            className="min-w-3xl"
+          >
+              <DialogTitle className="hidden">Selectable Data Grid</DialogTitle>
+              <div className="text-sm text-muted-foreground">
+                <p>
+                  <kbd>Ctrl+C:</kbd> Copy selected cells
+                </p>
+                <p>
+                  <kbd>Esc:</kbd> Clear selection
+                </p>
+              </div>
+            <ScrollArea className="h-[75dvh]">
 
-            <Table className="select-none">
-              <TableHeader>
-                <TableRow>
-                  {columnHeaders.map((header, idx) => (
-                    <TableHead key={idx}>{header}</TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.map((row, rowIndex) => (
-                  <TableRow key={rowIndex}>
-                    {columnHeaders.map((colKey) => (
-                      <TableCell
-                        key={`${rowIndex}-${colKey}`}
-                        onMouseDown={() =>
-                          handleCellMouseDown(rowIndex, colKey, row[colKey])
-                        }
-                        onMouseEnter={() =>
-                          handleCellMouseEnter(rowIndex, colKey)
-                        }
-                        className={`cursor-pointer transition-colors relative ${
-                          isCellSelected(rowIndex, colKey)
-                            ? "bg-accent ring-1 ring-inset rounded"
-                            : "hover:bg-muted"
-                        }`}
-                      >
-                        <span className="relative z-10">{row[colKey]}</span>
-                        {isCellCopied(rowIndex, colKey) && (
-                          <span className="absolute inset-0 bg-primary/50 animate-pulse" />
-                        )}
-                      </TableCell>
+              <Table className="select-none">
+                <TableHeader>
+                  <TableRow>
+                    {columnHeaders.map((header, idx) => (
+                      <TableHead key={idx}>{header}</TableHead>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {data.map((row, rowIndex) => (
+                    <TableRow key={rowIndex}>
+                      {columnHeaders.map((colKey) => (
+                        <TableCell
+                          key={`${rowIndex}-${colKey}`}
+                          onMouseDown={() =>
+                            handleCellMouseDown(rowIndex, colKey, row[colKey])
+                          }
+                          onMouseEnter={() =>
+                            handleCellMouseEnter(rowIndex, colKey)
+                          }
+                          className={`cursor-pointer transition-colors relative ${
+                            isCellSelected(rowIndex, colKey)
+                              ? "bg-accent ring-1 ring-inset rounded"
+                              : "hover:bg-muted"
+                          }`}
+                        >
+                          <span className="relative z-10">{row[colKey]}</span>
+                          {isCellCopied(rowIndex, colKey) && (
+                            <span className="absolute inset-0 bg-primary/50 animate-pulse" />
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </ScrollArea>
           </DialogContent>
         </Dialog>
       )}
