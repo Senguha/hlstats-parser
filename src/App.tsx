@@ -1,10 +1,5 @@
 import { useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PlaytimeSummary } from "@/components/playtime-summary";
 import { PlayerList } from "@/components/player-list";
@@ -64,22 +59,8 @@ export default function App() {
           </Alert>
         )}
 
-        {loading && loadingMessage && (
-          <Card className="border-primary/50 bg-primary/5">
-            <CardContent className="flex items-center gap-4 py-6">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-              <div>
-                <p className="font-medium">{loadingMessage}</p>
-                <p className="text-sm text-muted-foreground">
-                  Please wait while we fetch the latest data...
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {loading ? (
-          <LoadingSkeleton/>
+        {(loading && loadingMessage) ? (
+          <LoadingSkeleton message={loadingMessage}/>
         ) : (
           <>
             {playersInfo.length > 1 && (
