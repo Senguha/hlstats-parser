@@ -56,7 +56,14 @@ export function PresetsDialog() {
   const [playerIdInput, setPlayerIdInput] = useState("");
   const [playerNameInput, setPlayerNameInput] = useState("");
 
-  const { presets, addPreset, deletePreset, updatePreset, activePreset, setActivePreset } = usePresetStore();
+  const {
+    presets,
+    addPreset,
+    deletePreset,
+    updatePreset,
+    activePreset,
+    setActivePreset,
+  } = usePresetStore();
   const { playersInfo, loadPreset, loading, loadingMessage } = usePlayerStore();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -111,7 +118,6 @@ export function PresetsDialog() {
   };
 
   const restorePreset = (presetName: string) => {
-
     const restorePreset = presetsStatic.find((p) => p.name === presetName);
     if (restorePreset !== undefined) handleRestorePreset(restorePreset);
   };
@@ -149,22 +155,18 @@ export function PresetsDialog() {
     downloadFile(presetData, `${preset.name}-preset.json`, "application/json");
   };
 
-  const {
-    preset,
-    loading: presetLoading,
-    importPreset,
-  } = usePresetImporter();
+  const { preset, loading: presetLoading, importPreset } = usePresetImporter();
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
 
-    console.log(file)
+    console.log(file);
     if (!file) return;
 
     try {
-      await importPreset(file).then((presetImported)=>{
+      await importPreset(file).then((presetImported) => {
         if (presetImported !== null && preset !== presetImported) {
           handleImportPreset(presetImported);
         }
@@ -176,8 +178,7 @@ export function PresetsDialog() {
   };
 
   const handleImportPreset = (presetData: Preset) => {
-
-    console.log("preset in handleImportPreset:", presetData)
+    console.log("preset in handleImportPreset:", presetData);
     try {
       addPreset(presetData);
       toast.success("Preset imported", {
@@ -188,10 +189,9 @@ export function PresetsDialog() {
         description:
           error instanceof Error ? error.message : "Failed to import preset",
       });
-    }
-    finally{
-      if (inputRef.current?.files !== null && inputRef.current !== null){
-        inputRef.current.value = ""
+    } finally {
+      if (inputRef.current?.files !== null && inputRef.current !== null) {
+        inputRef.current.value = "";
       }
     }
   };
@@ -254,7 +254,7 @@ export function PresetsDialog() {
           if (newName !== undefined) player.name = newName;
         });
         updatePreset(preset.name, preset);
-        setActivePreset(preset.name)
+        setActivePreset(preset.name);
       });
       setOpen(false);
 
@@ -349,9 +349,7 @@ export function PresetsDialog() {
                       presets.map((preset) => (
                         <Item
                           key={preset.name}
-                          className=
-                            {`cursor-pointer transition-all hover:border-primary hover:shadow-md ${activePreset===preset.name ? "border-primary":""}` }
-                          
+                          className={`cursor-pointer transition-all hover:border-primary hover:shadow-md ${activePreset === preset.name ? "border-primary" : ""}`}
                           onClick={() => handleSelectPreset(preset.name)}
                           variant="outline"
                         >
@@ -432,10 +430,18 @@ export function PresetsDialog() {
                       <DropdownMenuItem
                         onClick={(e) => {
                           e.stopPropagation();
-                          restorePreset("top goon");
+                          restorePreset("All Admins");
                         }}
                       >
-                        Public
+                        All Admins
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          restorePreset("Public Admins");
+                        }}
+                      >
+                        Public Admins
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={(e) => {
@@ -443,10 +449,17 @@ export function PresetsDialog() {
                           restorePreset("Jail Admins");
                         }}
                       >
-                        Jail
+                        Jail Admins
                       </DropdownMenuItem>
-                      <DropdownMenuItem>Freak</DropdownMenuItem>
-                      <DropdownMenuItem>All admins</DropdownMenuItem>
+
+                      <DropdownMenuItem
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          restorePreset("FF2 Admins");
+                        }}
+                      >
+                        FF2 Admins
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                   <Button
@@ -498,7 +511,7 @@ export function PresetsDialog() {
                         }
                       }}
                     />
-{/*                     <Input
+                    {/*                     <Input
                       id="player-name"
                       placeholder="Player name (optional)"
                       value={playerNameInput}
