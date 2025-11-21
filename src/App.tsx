@@ -83,7 +83,7 @@ export default function App() {
                   <CardHeader>
                     <CardTitle className="flex justify-between">
                       <div>
-                        {selectedPlayer.name}'s Game Sessions
+                        <a href={`https://stats.chillout.pw/hlstats.php?mode=playerinfo&player=${selectedPlayer.id}`}>{selectedPlayer.name}'s Game Sessions</a>
                         <p className="text-sm text-muted-foreground font-normal">
                           Found {selectedPlayer.sessions.length} session
                           {selectedPlayer.sessions.length !== 1 ? "s" : ""}
