@@ -1,9 +1,9 @@
-import { create }  from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { Player, PlayerInfo } from '@/types/types'; // Make sure this path is correct
-import { fetchPlayer } from '@/lib/fetches'; // Make sure this path is correct
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { Player, PlayerInfo } from "@/types/types"; // Make sure this path is correct
+import { fetchPlayer } from "@/lib/fetches"; // Make sure this path is correct
 
-type PlayerState ={
+type PlayerState = {
   // === STATE ===
   playersInfo: PlayerInfo[];
   selectedPlayerId: string | null;
@@ -16,7 +16,7 @@ type PlayerState ={
   deletePlayer: (playerId: string) => void;
   refreshAllPlayers: (playersToRefresh?: Player[]) => Promise<void>;
   loadPreset: (newPlayers: Player[]) => Promise<void>;
-}
+};
 
 export const usePlayerStore = create<PlayerState>()(
   persist(
@@ -25,8 +25,8 @@ export const usePlayerStore = create<PlayerState>()(
       playersInfo: [],
       selectedPlayerId: null,
       loading: false,
-      error: '',
-      loadingMessage: '',
+      error: "",
+      loadingMessage: "",
 
       // --- ACTIONS ---
 
@@ -51,33 +51,52 @@ export const usePlayerStore = create<PlayerState>()(
        * Refreshes data for a list of players, or all players if none provided.
        */
       refreshAllPlayers: async (playersToRefresh?: Player[]) => {
-        // Use provided players or default to all players in the store
         const targetPlayers = playersToRefresh || get().playersInfo;
         if (targetPlayers.length === 0) return;
 
         set({
           loading: true,
-          error: '',
+          error: "",
           loadingMessage: `Refreshing data for ${targetPlayers.length} player${
-            targetPlayers.length !== 1 ? 's' : ''
+            targetPlayers.length !== 1 ? "s" : ""
           }...`,
         });
 
         try {
           const refreshedPlayersMap = new Map<string, PlayerInfo>();
+          let completed = 0;
 
-          // Fetch new data for all target players
-          for (let i = 0; i < targetPlayers.length; i++) {
-            const player = targetPlayers[i];
-            set({
-              loadingMessage: `Refreshing ${player.name}... (${i + 1}/${
-                targetPlayers.length
-              })`,
-            });
+          // Create promises with progress tracking
+          const playerPromises = targetPlayers.map(async (player) => {
+            try {
+              const playerInfo = await fetchPlayer(player.id);
+              completed++;
+              set({
+                loadingMessage: `Refreshed ${completed}/${targetPlayers.length} players...`,
+              });
+              return { success: true, data: playerInfo };
+            } catch (error) {
+              completed++;
+              return { success: false, error, playerId: player.id };
+            }
+          });
 
-            const playerInfo = await fetchPlayer(player.id);
-            refreshedPlayersMap.set(playerInfo.id, playerInfo);
-          }
+          // Wait for all to complete
+          const results = await Promise.allSettled(playerPromises);
+
+          // Process results
+          const errors: string[] = [];
+          results.forEach((result) => {
+            if (
+              result.status === "fulfilled" &&
+              result.value.success &&
+              result.value.data
+            ) {
+              refreshedPlayersMap.set(result.value.data.id, result.value.data);
+            } else if (result.status === "fulfilled" && !result.value.success) {
+              errors.push(`Failed to refresh player ${result.value.playerId}`);
+            }
+          });
 
           // Update the playersInfo state by merging new data
           set((state) => ({
@@ -85,76 +104,102 @@ export const usePlayerStore = create<PlayerState>()(
               (p) => refreshedPlayersMap.get(p.id) || p
             ),
           }));
+
+          // Show errors if any
+          if (errors.length > 0) {
+            set({
+              error: `Some players failed to refresh: ${errors.join(", ")}`,
+            });
+          }
         } catch (err) {
           set({
             error:
-              err instanceof Error ? err.message : 'Failed to refresh player data',
+              err instanceof Error
+                ? err.message
+                : "Failed to refresh player data",
           });
         } finally {
-          set({ loading: false, loadingMessage: '' });
+          set({ loading: false, loadingMessage: "" });
         }
       },
 
       /**
-       * Loads a preset list of players, fetching new players and reusing existing ones.
+       * Loads a preset list of players in parallel with progress updates.
        */
       loadPreset: async (newPlayers: Player[]) => {
         set({
           loading: true,
-          error: '',
+          error: "",
           loadingMessage: `Loading preset with ${newPlayers.length} player${
-            newPlayers.length !== 1 ? 's' : ''
+            newPlayers.length !== 1 ? "s" : ""
           }...`,
         });
 
         try {
-          const playersBuf: PlayerInfo[] = [];
-          const existingPlayers = get().playersInfo; // Get current players from state
+          const existingPlayers = get().playersInfo;
 
-          // Iterate over the preset list
-          for (let i = 0; i < newPlayers.length; i++) {
-            const newPlayer = newPlayers[i];
+          // Separate existing and new players
+          const playersToFetch: Player[] = [];
+          const reusedPlayers: PlayerInfo[] = [];
 
-            // Check if player already exists in our state
+          newPlayers.forEach((newPlayer) => {
             const existingPlayer = existingPlayers.find(
               (p) => p.id === newPlayer.id
             );
 
             if (existingPlayer) {
-              playersBuf.push(existingPlayer); // Reuse existing data
+              reusedPlayers.push(existingPlayer);
             } else {
-              // Player is new, fetch their data
-              set({
-                loadingMessage: `Loading player ${newPlayer.name}... (${i + 1}/${
-                  newPlayers.length
-                })`,
-              });
-
-              const playerInfo = await fetchPlayer(newPlayer.id);
-              playersBuf.push(playerInfo);
+              playersToFetch.push(newPlayer);
             }
+          });
+
+          let fetchedPlayers: PlayerInfo[] = [];
+
+          if (playersToFetch.length > 0) {
+            let completed = 0;
+
+            const playerPromises = playersToFetch.map(async (player) => {
+              const playerInfo = await fetchPlayer(player.id);
+              completed++;
+              set({
+                loadingMessage: `Loaded ${completed}/${playersToFetch.length} new players...`,
+              });
+              return playerInfo;
+            });
+
+            fetchedPlayers = await Promise.all(playerPromises);
           }
+
+          // Combine reused and fetched players in the original order
+          const playersBuf: PlayerInfo[] = newPlayers.map((newPlayer) => {
+            const reused = reusedPlayers.find((p) => p.id === newPlayer.id);
+            if (reused) return reused;
+
+            const fetched = fetchedPlayers.find((p) => p.id === newPlayer.id);
+            return fetched!;
+          });
 
           // Overwrite the list with the new preset list
           set({ playersInfo: playersBuf });
 
-          // Select the first player in the new list
+          // Select the first player
           if (playersBuf.length > 0) {
             set({ selectedPlayerId: playersBuf[0].id });
           } else {
-            set({ selectedPlayerId: null }); // No players, select null
+            set({ selectedPlayerId: null });
           }
         } catch (err) {
           set({
-            error: err instanceof Error ? err.message : 'Failed to load preset',
+            error: err instanceof Error ? err.message : "Failed to load preset",
           });
         } finally {
-          set({ loading: false, loadingMessage: '' });
+          set({ loading: false, loadingMessage: "" });
         }
       },
     }),
     {
-      name: 'hlstats-players', // Key for localStorage
+      name: "hlstats-players", // Key for localStorage
       // This function specifies which parts of the state to save.
       // We only want to save 'playersInfo'.
       partialize: (state) => ({ playersInfo: state.playersInfo }),
