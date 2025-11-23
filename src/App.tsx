@@ -68,7 +68,7 @@ export default function App() {
             )}
 
             <div>
-              <h2 className="text-2xl font-semibold mb-4">Players</h2>
+              {/* <h2 className="text-2xl font-semibold mb-4">Players</h2> */}
               <PlayerList
                 players={playersInfo}
                 selectedPlayerId={selectedPlayerId}

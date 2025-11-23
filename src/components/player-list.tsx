@@ -11,8 +11,9 @@ interface PlayerListProps {
 export function PlayerList({ players, selectedPlayerId, onSelectPlayer, loading }: PlayerListProps) {
   if (players.length === 0) {
     return (
-      <div className="text-center py-12 text-muted-foreground">
-        <p>No players added yet.</p>
+      <div className="text-center py-12 text-muted-foreground mt-54">
+        <p>No players to display</p>
+        <p>Please select a <b>preset</b></p>
       </div>
     )
   }
