@@ -113,14 +113,6 @@ export const presetsStatic = [
         name: "Amadeus",
       },
       {
-        id: "3860",
-        name: "Mashka",
-      },
-      {
-        id: "4992",
-        name: "[GAYFUR]❤Мякиш(хлеб)",
-      },
-      {
         id: "1163",
         name: "HABAR3342",
       },
@@ -190,10 +182,6 @@ export const presetsStatic = [
         name: "ALEX",
       },
       {
-        id: "4992",
-        name: "[GAYFUR]❤Мякиш(хлеб)",
-      },
-      {
         id: "1163",
         name: "HABAR3342",
       },
@@ -257,10 +245,6 @@ export const presetsStatic = [
       {
         id: "12971",
         name: "бакс бани",
-      },
-      {
-        id: "3860",
-        name: "Mashka",
       },
       {
         id: "28250",

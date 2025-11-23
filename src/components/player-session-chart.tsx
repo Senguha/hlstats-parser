@@ -4,7 +4,6 @@ import {
   BarChart,
   CartesianGrid,
   XAxis,
-  ResponsiveContainer,
 } from "recharts";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { fillMissingDates, formatSecondsToTime } from "@/lib/time-utils";
@@ -51,7 +50,6 @@ export function PlayerSessionChart(sessionsProps: PlayerSessionsProps) {
   return (
     <>
       <ChartContainer config={chartConfig} className="h-80 w-full">
-        <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData.reverse()}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" angle={-45} textAnchor="end" height={35}/>
@@ -65,7 +63,6 @@ export function PlayerSessionChart(sessionsProps: PlayerSessionsProps) {
               cursor={{ fill: "hsl(var(--muted))", opacity: 0.5 }}
             />
           </BarChart>
-        </ResponsiveContainer>
       </ChartContainer>
     </>
   );

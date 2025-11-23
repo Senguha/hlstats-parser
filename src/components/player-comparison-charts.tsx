@@ -5,7 +5,6 @@ import {
   BarChart,
   CartesianGrid,
   XAxis,
-  ResponsiveContainer,
   Tooltip,
 } from "recharts";
 import { ChartContainer } from "@/components/ui/chart";
@@ -296,7 +295,6 @@ export function PlayerComparisonCharts({
         <CardContent>
           <PlayerTable rawData={chartData}>
             <ChartContainer config={chartConfig} className="h-80 w-full">
-              <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
@@ -319,7 +317,6 @@ export function PlayerComparisonCharts({
                     className="hover:cursor-pointer"
                   />
                 </BarChart>
-              </ResponsiveContainer>
             </ChartContainer>
           </PlayerTable>
         </CardContent>

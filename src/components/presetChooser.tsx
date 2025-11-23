@@ -56,6 +56,7 @@ export function PresetsDialog() {
   const [playerIdInput, setPlayerIdInput] = useState("");
   const [playerNameInput, setPlayerNameInput] = useState("");
 
+
   const {
     presets,
     addPreset,
@@ -307,6 +308,17 @@ export function PresetsDialog() {
     setPlayerNameInput("");
   };
 
+
+  const storeItem = localStorage.getItem("initPreset");
+
+  if (storeItem !== "true"){
+    restorePreset("FF2 Admins");
+    restorePreset("Jail Admins");
+    restorePreset("Public Admins");
+    restorePreset("All Admins");
+    localStorage.setItem("initPreset","true");
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -490,7 +502,7 @@ export function PresetsDialog() {
                   <Label htmlFor="preset-name">Preset Name</Label>
                   <Input
                     id="preset-name"
-                    placeholder="e.g., Weekend Squad"
+                    placeholder="Admins #1"
                     value={newPresetName}
                     onChange={(e) => setNewPresetName(e.target.value)}
                   />
@@ -501,7 +513,7 @@ export function PresetsDialog() {
                   <div className="space-y-2">
                     <Input
                       id="player-id"
-                      placeholder="Enter player ID"
+                      placeholder="HLStats player ID"
                       value={playerIdInput}
                       onChange={(e) => setPlayerIdInput(e.target.value)}
                       onKeyDown={(e) => {
@@ -538,7 +550,7 @@ export function PresetsDialog() {
                 {newPresetPlayers.length > 0 && (
                   <div className="space-y-2">
                     <Label>Players ({newPresetPlayers.length})</Label>
-                    <ScrollArea className="h-[200px] rounded-md border p-4">
+                    <ScrollArea className="h-[320px] rounded-md border p-4">
                       <div className="space-y-2">
                         {newPresetPlayers.map((player) => (
                           <div
