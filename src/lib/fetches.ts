@@ -1,4 +1,5 @@
 //import { useQuery, useQueries } from '@tanstack/react-query'
+import type SteamID from 'steamid';
 import type { PlayerInfo } from '../types/types' // Adjust path as needed
 
 
@@ -12,6 +13,19 @@ export async function fetchPlayer(playerId: string): Promise<PlayerInfo> {
   }
 
   return data;
+}
+
+export async function fetchHLStatsID(steamID: SteamID): Promise<string>{
+  
+  const steamID2 = steamID.steam2();
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/hlstatsid?steamid=${steamID2}`);
+
+  const data = await res.json();  
+  if (!res.ok){
+    throw new Error(`Error getting player info. ${data?.error}`)
+  }
+
+  return data.playerID;
 }
 
 // Custom hook for fetching a single player's sessions

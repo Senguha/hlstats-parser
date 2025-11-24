@@ -16,6 +16,7 @@ type PlayerState = {
   deletePlayer: (playerId: string) => void;
   refreshAllPlayers: (playersToRefresh?: Player[]) => Promise<void>;
   loadPreset: (newPlayers: Player[]) => Promise<void>;
+  loadPlayer: (player: Player) => Promise<void>;
 };
 
 export const usePlayerStore = create<PlayerState>()(
@@ -196,6 +197,35 @@ export const usePlayerStore = create<PlayerState>()(
         } finally {
           set({ loading: false, loadingMessage: "" });
         }
+      },
+      loadPlayer: async (player: Player) => {
+
+        const existingPlayer = get().playersInfo.find(
+          (p) => p.id === player.id
+        );
+        if (existingPlayer) {
+          set({ selectedPlayerId: player.id,
+            playersInfo: [existingPlayer]
+           });
+          return;
+        }
+        
+        set({
+          loading: true,
+          error: "",
+          loadingMessage: `Loading player ${player.name}...`,
+        });
+
+        try {
+          const playerInfo = await fetchPlayer(player.id);
+          set({ playersInfo: [playerInfo], selectedPlayerId: player.id });
+        } catch (err) {
+          set({
+            error: err instanceof Error ? err.message : "Failed to load player",
+          });
+        } finally {
+          set({ loading: false, loadingMessage: "" });
+        } 
       },
     }),
     {

@@ -3,6 +3,7 @@ import { RefreshCw } from "lucide-react";
 import type { Player } from "@/types/types";
 import { PresetsDialog } from "./presetChooser";
 import { ModeToggle } from "./theme-toggle";
+import SearchPlayerButton from "./search-player-button";
 
 interface PresetsHeaderProps {
   currentPlayers: Player[];
@@ -12,21 +13,22 @@ interface PresetsHeaderProps {
   isRefreshing: boolean;
 }
 
-
 export function PresetsHeader({
   onRefresh,
   hasPlayers,
   isRefreshing,
 }: PresetsHeaderProps) {
-
   return (
     <header className="sticky top-2 z-50 md:w-[85vw] w-full mx-auto border border-border bg-background shadow-md rounded-xl dark:border-input">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
-        <h1 className="text-2xl text-muted-foreground font-bold tracking-tight transition-all hover:scale-105 hover:text-primary">HLStats Parser</h1>
-        
+        <div className="flex gap-2 items-center">
+          <h1 className="text-2xl text-muted-foreground font-bold tracking-tight transition-all hover:scale-105 hover:text-primary">
+            HLStats Parser
+          </h1>
+          <SearchPlayerButton />
+        </div>
 
         <div className="flex items-center gap-3">
-          
           <Button
             variant="outline"
             onClick={onRefresh}
@@ -38,7 +40,7 @@ export function PresetsHeader({
             Refresh
           </Button>
           <PresetsDialog />
-          <ModeToggle/>
+          <ModeToggle />
         </div>
       </div>
     </header>

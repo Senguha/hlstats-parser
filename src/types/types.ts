@@ -10,14 +10,14 @@ export type GameSessionShort = {
 }
 
 export type PlayerInfo = {
-  id: string
+  id: string // HLStats ID
   name: string
   sessions: GameSession[]
   totalConnectionTimeSeconds: number
 }
 
 export type Player = {
-  id: string,
+  id: string, // HLStats ID
   name?: string
 }
 
