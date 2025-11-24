@@ -15,9 +15,18 @@ export async function fetchPlayer(playerId: string): Promise<PlayerInfo> {
   return data;
 }
 
-export async function fetchHLStatsID(steamID: SteamID): Promise<string>{
+type fetchHLStatsIDResponse = {
+  status: "success";
+  playerID: string;
+} | {
+  status: "error";
+  error?: string;
+};
+
+export async function fetchHLStatsID(steamID: SteamID): Promise<fetchHLStatsIDResponse>{
   
-  const steamID2 = steamID.steam2();
+  try {
+      const steamID2 = steamID.steam2();
   const res = await fetch(`${import.meta.env.VITE_API_URL}/hlstatsid?steamid=${steamID2}`);
 
   const data = await res.json();  
@@ -25,7 +34,14 @@ export async function fetchHLStatsID(steamID: SteamID): Promise<string>{
     throw new Error(`Error getting player info. ${data?.error}`)
   }
 
-  return data.playerID;
+  return ({status: "success", playerID: data.playerID});
+  } catch (error) {
+    if (error instanceof Error) {
+      return ({status: "error", error: error.message});
+    }
+    return ({status: "error"});
+  }
+
 }
 
 // Custom hook for fetching a single player's sessions

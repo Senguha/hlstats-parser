@@ -205,7 +205,8 @@ export const usePlayerStore = create<PlayerState>()(
         );
         if (existingPlayer) {
           set({ selectedPlayerId: player.id,
-            playersInfo: [existingPlayer]
+            playersInfo: [existingPlayer],
+            error: ""
            });
           return;
         }
@@ -213,7 +214,7 @@ export const usePlayerStore = create<PlayerState>()(
         set({
           loading: true,
           error: "",
-          loadingMessage: `Loading player ${player.name}...`,
+          loadingMessage: `Loading player...`,
         });
 
         try {
