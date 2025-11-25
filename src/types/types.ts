@@ -14,6 +14,7 @@ export type PlayerInfo = {
   name: string
   sessions: GameSession[]
   totalConnectionTimeSeconds: number
+  createdAt: Date
 }
 
 export type Player = {

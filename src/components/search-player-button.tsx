@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { cn, parseSearchQuery } from "@/lib/utils";
 import { usePlayerStore } from "@/store/playerStore";
-import { fetchHLStatsID } from "@/lib/fetches";
 import { toast } from "sonner";
+import { fetchHLStatsID } from "@/lib/fetches";
 
 export default function SearchPlayerButton() {
   const [active, setActive] = useState(false);
