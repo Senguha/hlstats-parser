@@ -118,6 +118,10 @@ export const presetsStatic = [
         id: "21858",
         name: "Пельмешка",
       },
+      {
+        id: "1901",
+        name: "yfyfyfyfyfy"
+      }
     ],
   },
   {
@@ -220,6 +224,10 @@ export const presetsStatic = [
         id: "28250",
         name: "Arharion Ξ arkhipov, bwh",
       },
+      {
+        id: "1901",
+        name: "yfyfyfyfyfy"
+      }
     ],
   },
   {
