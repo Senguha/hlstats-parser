@@ -114,6 +114,10 @@ export const presetsStatic = [
         id: "2150",
         name: "Aplus",
       },
+      {
+        id: "21858",
+        name: "Пельмешка",
+      },
     ],
   },
   {
@@ -164,6 +168,10 @@ export const presetsStatic = [
       {
         id: "11365",
         name: "RYTP Psina",
+      },
+      {
+        id: "21858",
+        name: "Пельмешка",
       },
     ],
   },
