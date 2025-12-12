@@ -27,6 +27,11 @@ export type Preset = {
   players: Player[]
 }
 
+export type StaticPreset = Preset & {
+  id: number,
+  version: number
+}
+
 export type ChartOption = {
   type: "7days" | "30days" | "Full",
 } | {

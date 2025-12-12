@@ -1,8 +1,10 @@
-import type { Preset } from "@/types/types";
+import type {StaticPreset } from "@/types/types";
 
 export const presetsStatic = [
   {
     name: "All Admins",
+    id: 0,
+    version: 1,
     players: [
       {
         id: "2749",
@@ -37,20 +39,8 @@ export const presetsStatic = [
         name: "Kekwman",
       },
       {
-        id: "1056",
-        name: "Грешник",
-      },
-      {
-        id: "1828",
-        name: "Kiskis",
-      },
-      {
         id: "145",
         name: "Лук",
-      },
-      {
-        id: "229",
-        name: "Tosha",
       },
       {
         id: "134",
@@ -81,16 +71,8 @@ export const presetsStatic = [
         name: "Kerfur4ik >_<",
       },
       {
-        id: "6342",
-        name: "Скорпивной",
-      },
-      {
         id: "1363",
         name: "aparat",
-      },
-      {
-        id: "459",
-        name: "LSimple",
       },
       {
         id: "3537",
@@ -107,10 +89,6 @@ export const presetsStatic = [
       {
         id: "4025",
         name: "ALEX",
-      },
-      {
-        id: "36531",
-        name: "Amadeus",
       },
       {
         id: "1163",
@@ -140,18 +118,12 @@ export const presetsStatic = [
   },
   {
     name: "Public Admins",
+    id: 1,
+    version: 1,
     players: [
       {
         id: "832",
         name: "just a joke ",
-      },
-      {
-        id: "1056",
-        name: "Грешник",
-      },
-      {
-        id: "1828",
-        name: "Kiskis",
       },
       {
         id: "145",
@@ -164,10 +136,6 @@ export const presetsStatic = [
       {
         id: "1363",
         name: "aparat",
-      },
-      {
-        id: "459",
-        name: "LSimple",
       },
       {
         id: "3537",
@@ -201,6 +169,8 @@ export const presetsStatic = [
   },
   {
     name: "Jail Admins",
+    id: 2,
+    version: 1,
     players: [
       {
         id: "2749",
@@ -235,14 +205,6 @@ export const presetsStatic = [
         name: "Mochalobster313 [SGR]",
       },
       {
-        id: "2849",
-        name: "Kerfur4ik >_<",
-      },
-      {
-        id: "6342",
-        name: "Скорпивной",
-      },
-      {
         id: "12971",
         name: "бакс бани",
       },
@@ -254,14 +216,15 @@ export const presetsStatic = [
   },
   {
     name: "FF2 Admins",
+    id: 3,
+    version: 1,
     players: [
       { id: "366", name: "Kekwman" },
-      { id: "229", name: "Tosha" },
       { id: "134", name: "angelset95" },
       { id: "3753", name: "Andrey" },
       { id: "292", name: "Mr.ZoBZA" },
-      { id: "36531", name: "Amadeus" },
+      { id: "2849", name: "Kerfur4ik >_<",},
       { id: "2150", name: "Aplus" },
     ],
   },
-] as Preset[];
+] as StaticPreset[];

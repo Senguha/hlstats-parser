@@ -1,31 +1,36 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Preset } from "@/types/types";
+import type { Preset, StaticPreset } from "@/types/types";
+import { presetsStatic } from "@/lib/presets";
 
 type PresetState = {
   // === STATE ===
   presets: Preset[];
+  staticPresets: StaticPreset[];
   activePreset: string;
 
   // === ACTIONS ===
-  addPreset: (preset: Omit<Preset, "createdAt">) => void;
+  addPreset: (preset: Preset) => void;
   deletePreset: (presetName: string) => void;
-  updatePreset: (oldName: string, newPreset: Omit<Preset, "createdAt">) => void;
+  updatePreset: (oldName: string, newPreset: Preset) => void;
   setActivePreset: (preset: string) => void;
+  refreshStaticPresets:()=> void;
 };
 
 export const usePresetStore = create<PresetState>()(
   persist(
     (set) => ({
-      // --- INITIAL STATE ---
       presets: [],
+      staticPresets: [],
       activePreset: "",
 
-      // --- ACTIONS ---
-
-      /**
-       * Adds a new preset to the list.
-       */
+      refreshStaticPresets: () => {
+        set((state)=>{
+          const staticNames = presetsStatic.map((preset)=>preset.name)
+          const initPresets = state.presets.filter((p)=> !staticNames.includes(p.name))
+          return {presets: initPresets, staticPresets: presetsStatic};
+        })
+      },
       addPreset: (preset) => {
         set((state) => {
           // Check if preset with same name already exists
@@ -71,6 +76,12 @@ export const usePresetStore = create<PresetState>()(
     }),
     {
       name: "saved-presets",
+      onRehydrateStorage: () => (state) => {
+        // This runs after the store loads from localStorage
+        if (state) {
+          state.refreshStaticPresets();
+        }
+      },
     }
   )
 );

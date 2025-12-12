@@ -17,8 +17,8 @@ import {
   Users,
   Loader2,
   EllipsisVertical,
-  ArchiveRestore,
   UploadIcon,
+  LockIcon,
 } from "lucide-react";
 import { usePresetStore } from "@/store/presetStore";
 import { usePlayerStore } from "@/store/playerStore";
@@ -36,7 +36,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import type { Preset } from "@/types/types";
+import type { Preset, StaticPreset } from "@/types/types";
 import { ButtonGroup } from "./ui/button-group";
 import { presetsStatic } from "@/lib/presets";
 import { downloadFile, usePresetImporter } from "@/lib/export-utils";
@@ -59,6 +59,7 @@ export function PresetsDialog() {
 
   const {
     presets,
+    staticPresets,
     addPreset,
     deletePreset,
     updatePreset,
@@ -123,7 +124,7 @@ export function PresetsDialog() {
     if (restorePreset !== undefined) handleRestorePreset(restorePreset);
   };
 
-  const handleRestorePreset = (presetData: Preset) => {
+  const handleRestorePreset = (presetData: StaticPreset) => {
     if (!presetData.name.trim()) {
       toast.error("Invalid name", {
         description: "Restore preset doesn't have a name",
@@ -242,8 +243,11 @@ export function PresetsDialog() {
   };
 
   const handleSelectPreset = async (presetName: string) => {
-    const preset = presets.find((p) => p.name === presetName);
-    if (!preset) return;
+    let preset = presets.find((p) => p.name === presetName);
+    if (!preset) 
+      preset = staticPresets.find((p) => p.name === presetName);
+    if (!preset)
+      return;
 
     try {
       loadPreset(preset.players).then(() => {
@@ -348,7 +352,7 @@ export function PresetsDialog() {
               <>
                 <ScrollArea className="h-[400px] pr-4">
                   <div className="space-y-3">
-                    {presets.length === 0 && (
+                    {(presets.length === 0 && staticPresets.length===0) && (
                       <div className="text-center py-8 text-muted-foreground">
                         <Users className="h-12 w-12 mx-auto mb-2 opacity-50" />
                         <p>No presets yet</p>
@@ -357,6 +361,55 @@ export function PresetsDialog() {
                         </p>
                       </div>
                     )}
+                    {staticPresets.length > 0 &&
+                      staticPresets.map((preset) => (
+                        <Item
+                          key={preset.name}
+                          className={`cursor-pointer transition-all border- hover:border-primary hover:shadow-md ${activePreset === preset.name ? "border-primary" : ""}`}
+                          onClick={() => handleSelectPreset(preset.name)}
+                          variant="outline"
+                        >
+                          <ItemContent>
+                            <ItemTitle className="font-semibold">
+                              {preset.name} <LockIcon className="h-4 w-4" />
+                            </ItemTitle>
+                            <ItemDescription className="text-xs">
+                              Players: {preset.players.length}
+                            </ItemDescription>
+                          </ItemContent>
+                          <ItemActions>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8"
+                                >
+                                  <EllipsisVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuItem
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDuplicatePreset(preset);
+                                  }}
+                                >
+                                  Duplicate
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleExportPreset(preset);
+                                  }}
+                                >
+                                  Export
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </ItemActions>
+                        </Item>
+                      ))}
                     {presets.length > 0 &&
                       presets.map((preset) => (
                         <Item
@@ -431,49 +484,6 @@ export function PresetsDialog() {
                     <Plus className="h-4 w-4" />
                     Create New
                   </Button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline">
-                        <ArchiveRestore className="h-4 w-4" />
-                        Restore
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          restorePreset("All Admins");
-                        }}
-                      >
-                        All Admins
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          restorePreset("Public Admins");
-                        }}
-                      >
-                        Public Admins
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          restorePreset("Jail Admins");
-                        }}
-                      >
-                        Jail Admins
-                      </DropdownMenuItem>
-
-                      <DropdownMenuItem
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          restorePreset("FF2 Admins");
-                        }}
-                      >
-                        FF2 Admins
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
                   <Button
                     variant="outline"
                     onClick={(e) => {
@@ -550,7 +560,7 @@ export function PresetsDialog() {
                 {newPresetPlayers.length > 0 && (
                   <div className="space-y-2">
                     <Label>Players ({newPresetPlayers.length})</Label>
-                    <ScrollArea className="h-[320px] rounded-md border p-4">
+                    <ScrollArea className="h-80 rounded-md border p-4">
                       <div className="space-y-2">
                         {newPresetPlayers.map((player) => (
                           <div
