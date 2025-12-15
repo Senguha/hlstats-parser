@@ -19,10 +19,6 @@ export const presetsStatic = [
         name: "Rubedo",
       },
       {
-        id: "4098",
-        name: "Ron_Kot",
-      },
-      {
         id: "220",
         name: "[☭] ШОкоЛАдКА [☭]",
       },
@@ -197,10 +193,6 @@ export const presetsStatic = [
         name: "Rubedo",
       },
       {
-        id: "4098",
-        name: "Ron_Kot",
-      },
-      {
         id: "220",
         name: "[☭] ШОкоЛАдКА [☭]",
       },
@@ -243,4 +235,16 @@ export const presetsStatic = [
       { id: "2150", name: "Aplus" },
     ],
   },
+  {
+    name: "Curators",
+    id: 4,
+    version: 1,
+    players: [
+      { id: "4098", name: "Ron_Kot"},
+      { id: "8891", name: "Somik"},
+      { id: "955", name: "Ragz"},
+      { id: "1056", name: "Грешник"},
+
+    ]
+  }
 ] as StaticPreset[];
