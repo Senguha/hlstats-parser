@@ -1,4 +1,4 @@
-import type {StaticPreset } from "@/types/types";
+import type { StaticPreset } from "@/types/types";
 
 export const presetsStatic = [
   {
@@ -67,10 +67,6 @@ export const presetsStatic = [
         name: "Kerfur4ik >_<",
       },
       {
-        id: "1363",
-        name: "aparat",
-      },
-      {
         id: "3537",
         name: "megadk.",
       },
@@ -112,7 +108,7 @@ export const presetsStatic = [
       },
       {
         id: "12295",
-        name: "Palochki"
+        name: "Palochki",
       },
       {
         id: "21858",
@@ -120,8 +116,16 @@ export const presetsStatic = [
       },
       {
         id: "1901",
-        name: "yfyfyfyfyfy"
-      }
+        name: "yfyfyfyfyfy",
+      },
+      {
+        id: "62238",
+        name: "Weezen",
+      },
+      {
+        id: "2903",
+        name: "Sasai",
+      },
     ],
   },
   {
@@ -140,10 +144,6 @@ export const presetsStatic = [
       {
         id: "206",
         name: "Schizoid",
-      },
-      {
-        id: "1363",
-        name: "aparat",
       },
       {
         id: "3537",
@@ -175,11 +175,15 @@ export const presetsStatic = [
       },
       {
         id: "12295",
-        name: "Palochki"
+        name: "Palochki",
       },
       {
         id: "21858",
         name: "Пельмешка",
+      },
+      {
+        id: "2903",
+        name: "Sasai",
       },
     ],
   },
@@ -226,8 +230,12 @@ export const presetsStatic = [
       },
       {
         id: "1901",
-        name: "yfyfyfyfyfy"
-      }
+        name: "yfyfyfyfyfy",
+      },
+      {
+        id: "62238",
+        name: "Weezen",
+      },
     ],
   },
   {
@@ -239,7 +247,7 @@ export const presetsStatic = [
       { id: "134", name: "angelset95" },
       { id: "3753", name: "Andrey" },
       { id: "292", name: "Mr.ZoBZA" },
-      { id: "2849", name: "Kerfur4ik >_<",},
+      { id: "2849", name: "Kerfur4ik >_<" },
       { id: "2150", name: "Aplus" },
     ],
   },
@@ -248,11 +256,11 @@ export const presetsStatic = [
     id: 4,
     version: 1,
     players: [
-      { id: "4098", name: "Ron_Kot"},
-      { id: "8891", name: "Somik"},
-      { id: "955", name: "Ragz"},
-      { id: "1056", name: "Грешник"},
-
-    ]
-  }
+      { id: "4098", name: "Ron_Kot" },
+      { id: "8891", name: "Somik" },
+      { id: "955", name: "Ragz" },
+      { id: "1056", name: "Грешник" },
+      { id: "52", name: "Mtseng" },
+    ],
+  },
 ] as StaticPreset[];
