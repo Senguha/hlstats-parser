@@ -115,6 +115,10 @@ export const presetsStatic = [
         name: "Пельмешка",
       },
       {
+        id: "3756",
+        name: "Super Freeman",
+      },
+      {
         id: "1901",
         name: "yfyfyfyfyfy",
       },
@@ -249,6 +253,10 @@ export const presetsStatic = [
       { id: "292", name: "Mr.ZoBZA" },
       { id: "2849", name: "Kerfur4ik >_<" },
       { id: "2150", name: "Aplus" },
+      {
+        id: "3756",
+        name: "Super Freeman",
+      },
     ],
   },
   {
