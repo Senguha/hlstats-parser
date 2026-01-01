@@ -39,10 +39,6 @@ export const presetsStatic = [
         name: "Лук",
       },
       {
-        id: "134",
-        name: "angelset95",
-      },
-      {
         id: "206",
         name: "Schizoid",
       },
@@ -144,10 +140,6 @@ export const presetsStatic = [
       {
         id: "145",
         name: "Лук",
-      },
-      {
-        id: "206",
-        name: "Schizoid",
       },
       {
         id: "3537",
