@@ -107,10 +107,6 @@ export const presetsStatic = [
         name: "Palochki",
       },
       {
-        id: "21858",
-        name: "Пельмешка",
-      },
-      {
         id: "3756",
         name: "Super Freeman",
       },
@@ -125,6 +121,14 @@ export const presetsStatic = [
       {
         id: "2903",
         name: "Sasai",
+      },
+      {
+        id: "2165",
+        name: "Shiza69",
+      },
+      {
+        id: "39094",
+        name: "Упоротый Пингвин",
       },
     ],
   },
@@ -172,10 +176,6 @@ export const presetsStatic = [
       {
         id: "12295",
         name: "Palochki",
-      },
-      {
-        id: "21858",
-        name: "Пельмешка",
       },
       {
         id: "2903",
@@ -231,6 +231,14 @@ export const presetsStatic = [
       {
         id: "62238",
         name: "Weezen",
+      },
+      {
+        id: "2165",
+        name: "Shiza69",
+      },
+      {
+        id: "39094",
+        name: "Упоротый Пингвин",
       },
     ],
   },
