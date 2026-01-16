@@ -99,10 +99,6 @@ export const presetsStatic = [
         name: "Arharion Ξ arkhipov, bwh",
       },
       {
-        id: "2150",
-        name: "Aplus",
-      },
-      {
         id: "12295",
         name: "Palochki",
       },
@@ -139,7 +135,7 @@ export const presetsStatic = [
     players: [
       {
         id: "832",
-        name: "just a joke ",
+        name: "just a joke",
       },
       {
         id: "145",
@@ -252,7 +248,6 @@ export const presetsStatic = [
       { id: "3753", name: "Andrey" },
       { id: "292", name: "Mr.ZoBZA" },
       { id: "2849", name: "Kerfur4ik >_<" },
-      { id: "2150", name: "Aplus" },
       {
         id: "3756",
         name: "Super Freeman",
