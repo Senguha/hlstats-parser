@@ -83,10 +83,6 @@ export const presetsStatic = [
         name: "HABAR3342",
       },
       {
-        id: "177",
-        name: "Mimic",
-      },
-      {
         id: "33474",
         name: "RUDY",
       },
@@ -97,10 +93,6 @@ export const presetsStatic = [
       {
         id: "28250",
         name: "Arharion Ξ arkhipov, bwh",
-      },
-      {
-        id: "12295",
-        name: "Palochki",
       },
       {
         id: "3756",
@@ -120,7 +112,7 @@ export const presetsStatic = [
       },
       {
         id: "54459",
-        name: "Black Star"
+        name: "Black Star",
       },
       {
         id: "2165",
@@ -132,7 +124,11 @@ export const presetsStatic = [
       },
       {
         id: "61499",
-        name: "sniperchicha"
+        name: "sniperchicha",
+      },
+      {
+        id: "11967",
+        name: "NiceDuha"
       }
     ],
   },
@@ -166,10 +162,6 @@ export const presetsStatic = [
         name: "HABAR3342",
       },
       {
-        id: "177",
-        name: "Mimic",
-      },
-      {
         id: "33474",
         name: "RUDY",
       },
@@ -178,17 +170,17 @@ export const presetsStatic = [
         name: "RYTP Psina",
       },
       {
-        id: "12295",
-        name: "Palochki",
-      },
-      {
         id: "2903",
         name: "Sasai",
       },
       {
         id: "54459",
-        name: "Black Star"
+        name: "Black Star",
       },
+      {
+        id: "11967",
+        name: "NiceDuha"
+      }
     ],
   },
   {
@@ -260,14 +252,8 @@ export const presetsStatic = [
       { id: "3753", name: "Andrey" },
       { id: "292", name: "Mr.ZoBZA" },
       { id: "2849", name: "Kerfur4ik >_<" },
-      {
-        id: "3756",
-        name: "Super Freeman",
-      },
-      {
-        id: "61499",
-        name: "sniperchicha"
-      }
+      { id: "3756", name: "Super Freeman"},
+      { id: "61499", name: "sniperchicha" },
     ],
   },
   {
