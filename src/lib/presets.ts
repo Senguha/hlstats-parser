@@ -111,10 +111,6 @@ export const presetsStatic = [
         name: "Sasai",
       },
       {
-        id: "54459",
-        name: "Black Star",
-      },
-      {
         id: "2165",
         name: "Shiza69",
       },
@@ -129,7 +125,15 @@ export const presetsStatic = [
       {
         id: "11967",
         name: "NiceDuha"
-      }
+      },
+      {
+        id: "53641",
+        name: "RedBelka"
+      },
+      {
+        id: "8057",
+        name: "Desanrek"
+      },
     ],
   },
   {
@@ -174,13 +178,13 @@ export const presetsStatic = [
         name: "Sasai",
       },
       {
-        id: "54459",
-        name: "Black Star",
-      },
-      {
         id: "11967",
         name: "NiceDuha"
-      }
+      },
+      {
+        id: "53641",
+        name: "RedBelka"
+      },
     ],
   },
   {
@@ -240,6 +244,10 @@ export const presetsStatic = [
         id: "39094",
         name: "Упоротый Пингвин",
       },
+      {
+        id: "8057",
+        name: "Desanrek"
+      }
     ],
   },
   {
