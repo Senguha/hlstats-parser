@@ -83,10 +83,6 @@ export const presetsStatic = [
         name: "HABAR3342",
       },
       {
-        id: "33474",
-        name: "RUDY",
-      },
-      {
         id: "11365",
         name: "RYTP Psina",
       },
@@ -164,10 +160,6 @@ export const presetsStatic = [
       {
         id: "1163",
         name: "HABAR3342",
-      },
-      {
-        id: "33474",
-        name: "RUDY",
       },
       {
         id: "11365",
