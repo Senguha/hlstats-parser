@@ -130,6 +130,10 @@ export const presetsStatic = [
         id: "8057",
         name: "Desanrek"
       },
+      {
+        id: "177",
+        name: "Mimic"
+      },
     ],
   },
   {
@@ -176,6 +180,10 @@ export const presetsStatic = [
       {
         id: "53641",
         name: "RedBelka"
+      },
+      {
+        id: "177",
+        name: "Mimic"
       },
     ],
   },
