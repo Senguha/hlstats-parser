@@ -185,6 +185,14 @@ export const presetsStatic = [
         id: "177",
         name: "Mimic"
       },
+      {
+        id: "2749",
+        name: "Позитивный Чел",
+      },
+      {
+        id: "33598",
+        name: "MvN",
+      },
     ],
   },
   {
@@ -192,10 +200,6 @@ export const presetsStatic = [
     id: 2,
     version: 1,
     players: [
-      {
-        id: "2749",
-        name: "Позитивный Чел",
-      },
       {
         id: "479",
         name: "HotSid",
