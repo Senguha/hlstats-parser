@@ -134,6 +134,19 @@ export const presetsStatic = [
         id: "177",
         name: "Mimic"
       },
+      {
+        id: "33598",
+        name: "MvN",
+      },
+      { id: "955", name: "Ragz" },
+      {
+        id: "29579",
+        name: "Рейч",
+      },
+      {
+        id: "54",
+        name: "Own",
+      },
     ],
   },
   {
@@ -193,6 +206,11 @@ export const presetsStatic = [
         id: "33598",
         name: "MvN",
       },
+      { id: "955", name: "Ragz" },
+      {
+        id: "54",
+        name: "Own",
+      },
     ],
   },
   {
@@ -251,7 +269,11 @@ export const presetsStatic = [
       {
         id: "8057",
         name: "Desanrek"
-      }
+      },
+      {
+        id: "29579",
+        name: "Рейч",
+      },
     ],
   },
   {
@@ -275,7 +297,6 @@ export const presetsStatic = [
     players: [
       { id: "4098", name: "Ron_Kot" },
       { id: "8891", name: "Somik" },
-      { id: "955", name: "Ragz" },
       { id: "1056", name: "Грешник" },
       { id: "52", name: "Mtseng" },
     ],
