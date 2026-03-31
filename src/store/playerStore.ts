@@ -75,6 +75,7 @@ export const usePlayerStore = create<PlayerState>()(
               set({
                 loadingMessage: `Refreshed ${completed}/${targetPlayers.length} players...`,
               });
+              if (player.name) playerInfo.name = player.name
               return { success: true, data: playerInfo };
             } catch (error) {
               completed++;
@@ -166,6 +167,7 @@ export const usePlayerStore = create<PlayerState>()(
               set({
                 loadingMessage: `Loaded ${completed}/${playersToFetch.length} new players...`,
               });
+              if (player.name) playerInfo.name = player.name
               return playerInfo;
             });
 
@@ -219,6 +221,7 @@ export const usePlayerStore = create<PlayerState>()(
 
         try {
           const playerInfo = await fetchPlayer(player.id);
+          if (player.name) playerInfo.name = player.name
           set({ playersInfo: [playerInfo], selectedPlayerId: player.id });
         } catch (err) {
           set({
