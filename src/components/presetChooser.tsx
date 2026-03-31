@@ -38,8 +38,8 @@ import {
 } from "./ui/dropdown-menu";
 import type { Preset, StaticPreset } from "@/types/types";
 import { ButtonGroup } from "./ui/button-group";
-import { presetsStatic } from "@/lib/presets";
 import { downloadFile, usePresetImporter } from "@/lib/export-utils";
+import { getPresets } from "@/lib/fetches";
 
 interface Player {
   id: string;
@@ -119,7 +119,8 @@ export function PresetsDialog() {
     }
   };
 
-  const restorePreset = (presetName: string) => {
+  const restorePreset = async (presetName: string) => {
+    const presetsStatic = await getPresets()
     const restorePreset = presetsStatic.find((p) => p.name === presetName);
     if (restorePreset !== undefined) handleRestorePreset(restorePreset);
   };

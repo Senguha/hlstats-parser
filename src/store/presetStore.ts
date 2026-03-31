@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Preset, StaticPreset } from "@/types/types";
-import { presetsStatic } from "@/lib/presets";
+import { getPresets } from "@/lib/fetches";
 
 type PresetState = {
   // === STATE ===
@@ -24,7 +24,8 @@ export const usePresetStore = create<PresetState>()(
       staticPresets: [],
       activePreset: "",
 
-      refreshStaticPresets: () => {
+      refreshStaticPresets: async () => {
+        const presetsStatic = await getPresets()
         set((state)=>{
           const staticNames = presetsStatic.map((preset)=>preset.name)
           const initPresets = state.presets.filter((p)=> !staticNames.includes(p.name))

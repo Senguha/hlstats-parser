@@ -1,6 +1,6 @@
 //import { useQuery, useQueries } from '@tanstack/react-query'
 import type SteamID from 'steamid';
-import type { PlayerInfo } from '../types/types' // Adjust path as needed
+import type { PlayerInfo, StaticPreset } from '../types/types' // Adjust path as needed
 
 
 
@@ -43,6 +43,22 @@ export async function fetchHLStatsID(steamID: SteamID): Promise<fetchHLStatsIDRe
   }
 
 }
+
+export async function getPresets(): Promise<StaticPreset[]>{
+  
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/presets`);
+    const data = await res.json(); 
+    if (!res.ok)
+      throw new Error(`Error getting presets. ${data?.error}`)
+    return data
+  } 
+  catch (error) {
+    throw new Error(`Error getting presets. ${error}`)
+  }
+}
+
+
 
 // Custom hook for fetching a single player's sessions
 // export function usePlayerSessions(playerId: string, options?: { enabled?: boolean }) {
