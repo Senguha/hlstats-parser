@@ -48,8 +48,8 @@ const appUrl = (process.env.VERCEL_ENV==="production") ? (`https://${process.env
 
 
 const steam = new SteamAuth({
-  realm: `https://${appUrl}/api`,
-  returnUrl: `https://${appUrl}/api/auth/steam/authenticate`,
+  realm: `${appUrl}/api`,
+  returnUrl: `${appUrl}/api/auth/steam/authenticate`,
   apiKey: `${process.env.STEAM_API_KEY}`,
 });
 
