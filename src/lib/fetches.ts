@@ -4,7 +4,7 @@ import type { PlayerInfo, StaticPreset } from '../types/types' // Adjust path as
 
 
 export async function fetchPlayer(playerId: string): Promise<PlayerInfo> {
-  const res = await fetch(`https://${import.meta.env.VITE_VERCEL_URL}/api/playerInfo/${playerId}`);
+  const res = await fetch(`${import.meta.env.VITE_APP_URL}/api/playerInfo/${playerId}`);
 
   const data = await res.json();  
   if (!res.ok){
@@ -26,7 +26,7 @@ export async function fetchHLStatsID(steamID: SteamID): Promise<fetchHLStatsIDRe
   
   try {
       const steamID2 = steamID.steam2();
-  const res = await fetch(`https://${import.meta.env.VITE_VERCEL_URL}/api/hlstatsid?steamid=${steamID2}`);
+  const res = await fetch(`${import.meta.env.VITE_APP_URL}/api/hlstatsid?steamid=${steamID2}`);
 
   const data = await res.json();  
   if (!res.ok){
@@ -46,8 +46,7 @@ export async function fetchHLStatsID(steamID: SteamID): Promise<fetchHLStatsIDRe
 export async function getPresets(): Promise<StaticPreset[]>{
   
   try {
-    console.log(`https://${import.meta.env.VITE_VERCEL_URL}/api/presets`, import.meta.env.VITE_VERCEL_URL)
-    const res = await fetch(`https://${import.meta.env.VITE_VERCEL_URL}/api/presets`);
+    const res = await fetch(`${import.meta.env.VITE_APP_URL}/api/presets`);
     const data = await res.json(); 
     if (!res.ok)
       throw new Error(`Error getting presets. ${data?.error}`)
