@@ -44,9 +44,12 @@ function parseTimeToSeconds(timeString: string): number {
   return days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds;
 }
 
+const appUrl = (process.env.VERCEL_ENV==="production") ? (`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`) : (`https://${process.env.VERCEL_URL}`)
+
+
 const steam = new SteamAuth({
-  realm: `https://${process.env.VERCEL_URL}/api`,
-  returnUrl: `https://${process.env.VERCEL_URL}/api/auth/steam/authenticate`,
+  realm: `https://${appUrl}/api`,
+  returnUrl: `https://${appUrl}/api/auth/steam/authenticate`,
   apiKey: `${process.env.STEAM_API_KEY}`,
 });
 
